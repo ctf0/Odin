@@ -1,0 +1,181 @@
+@import "./vendor/animate";
+@import "./vendor/bulma-timeline";
+
+// overlay
+.shade {
+    position: fixed;
+    z-index: 5;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(black, 0.9);
+}
+
+// revisions list
+.revisions {
+    margin-top: 50px;
+    border-top: 1px dashed rgba(black, 0.5);
+
+    .revisions-link {
+        cursor: pointer;
+
+        td {
+            border: none !important;
+        }
+    }
+}
+
+// diff
+.compare-page {
+    position: fixed;
+    z-index: 5;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: scroll;
+    width: 60%;
+    height: 100%;
+    padding: 2rem;
+    background-color: white;
+}
+
+@media screen and (max-width: 992px) {
+    .compare-page {
+        width: 100%;
+    }
+}
+
+.compare-page__body {
+    padding-top: 10px;
+
+    .title {
+        margin: 0;
+        margin-left: 10px;
+    }
+
+    .crumbs {
+        position: relative;
+
+        &::before,
+        &::after {
+            position: absolute;
+            top: 15px;
+            left: -38px;
+            content: "";
+        }
+
+        &::before {
+            height: 25px;
+        }
+
+        &::after {
+            width: 34px;
+            border-top: 0.1rem dashed #dbdbdb;
+        }
+
+        span {
+            position: relative;
+            z-index: 1;
+            color: #363636;
+
+            &::before {
+                font-size: 2.1rem;
+                position: absolute;
+                top: 2px;
+                left: -14px;
+                content: "•";
+            }
+        }
+
+        &.is-5 {
+            margin-left: 22px;
+            color: #dbdbdb;
+
+            &::before,
+            &::after {
+                top: 10px;
+                left: -50px;
+            }
+
+            &::before {
+                height: 90px;
+            }
+
+            &::after {
+                width: 44px;
+            }
+
+            span {
+                color: #dbdbdb;
+
+                &::before {
+                    top: -4px;
+                    left: -16px;
+                }
+            }
+        }
+    }
+
+    .Differences {
+        border-spacing: 10px;
+        border-collapse: separate;
+
+        td {
+            width: 50%;
+            padding: 1rem !important;
+        }
+
+        ins,
+        del {
+            font-weight: bold;
+            padding: 2px 4px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .Skipped {
+            background: #f7f7f7;
+        }
+    }
+
+    .DifferencesSideBySide {
+        .ChangeInsert td {
+            &.Left,
+            &.Right {
+                background: rgba(0, 209, 178, 0.1);
+            }
+        }
+
+        .ChangeDelete td {
+            &.Left,
+            &.Right {
+                background: rgba(255, 56, 96, 0.1);
+            }
+        }
+
+        .ChangeReplace {
+            .Left {
+                background: rgba(255, 56, 96, 0.1);
+            }
+
+            del {
+                background: #ff3860;
+            }
+
+            .Right {
+                background: rgba(0, 209, 178, 0.1);
+            }
+
+            ins {
+                background: #00d1b2;
+            }
+        }
+    }
+}
+
+.compare-page__footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #dbdbdb;
+}

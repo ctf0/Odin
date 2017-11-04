@@ -1,0 +1,44 @@
+{
+    "name": "ctf0/odin",
+    "description": "GUI to manage model revisions",
+    "homepage": "https://github.com/ctf0/Odin",
+    "license": "MIT",
+    "keywords": [
+        "ctf0",
+        "diff",
+        "laravel",
+        "model",
+        "revisions",
+        "gui",
+        "manager"
+    ],
+    "authors": [
+        {
+            "name": "Muah",
+            "email": "muah003@gmail.com"
+        }
+    ],
+    "require": {
+        "php" : "~7.0",
+        "illuminate/support": "^5.4",
+        "phpspec/php-diff": "^1.1",
+        "owen-it/laravel-auditing": "^4.1",
+        "ctf0/package-changelog": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ctf0\\Odin\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ctf0\\Odin\\OdinServiceProvider"
+            ]
+        },
+        "changeLog": "logs"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
