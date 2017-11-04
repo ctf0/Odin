@@ -16,22 +16,22 @@ class OdinController extends Controller
      */
     public function restore($id)
     {
-        $r     = $this->getId($id);
-        $model = app($r->auditable_type)->find($r->auditable_id);
+        $revision = $this->getId($id);
+        $model    = app($revision->auditable_type)->find($revision->auditable_id);
 
-        if ('created' == $r->event) {
-            foreach ($r->getModified() as $col => $data) {
+        if ($revision->event == 'created') {
+            foreach ($revision->getModified() as $col => $data) {
                 $model->$col = $data['new'];
             }
         } else {
-            foreach ($r->getModified() as $col => $data) {
+            foreach ($revision->getModified() as $col => $data) {
                 $model->$col = $data['old'];
             }
         }
 
         $model->save()
-            ? session()->flash('status', 'Model Updated!')
-            : session()->flash('status', 'Something Went Wrong!');
+            ? session()->flash('status', trans('Odin::messages.res_success'))
+            : session()->flash('status', trans('Odin::messages.went_bad'));
 
         return back();
     }
@@ -48,13 +48,13 @@ class OdinController extends Controller
         if ($this->getId($id)->delete()) {
             return response()->json([
                 'success'=> true,
-                'message'=> 'Revision Removed',
+                'message'=> trans('Odin::messages.del_success'),
             ]);
         }
 
         return response()->json([
             'success'=> false,
-            'message'=> 'Something Went Wrong!',
+            'message'=> trans('Odin::messages.went_bad'),
         ]);
     }
 

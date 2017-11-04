@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/7388088/32404237-ba1a758e-c154-11e7-9afe-9adf8e500184.png">
+    <img src="https://user-images.githubusercontent.com/7388088/32410265-fe5f8d72-c1c4-11e7-97d7-c7693d44f961.png">
 </p>
 
 # Odin
@@ -82,6 +82,8 @@ class Post extends Model implements AuditableContract
     @include('Odin::list', ['revisions' => $post->revisions])
 @endif
 ```
+
+- for styling we use ***bulma***
 
 - add this one liner to your main js file and run `npm run watch` to compile your `js/css` files.
     + if you are having issues [Check](https://ctf0.wordpress.com/2017/09/12/laravel-mix-es6/).
