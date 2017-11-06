@@ -128,10 +128,12 @@
 
         ins,
         del {
-            font-weight: bold;
-            padding: 2px 4px;
-            text-decoration: none;
-            color: white;
+            &:not(:empty) {
+                font-weight: bold;
+                padding: 2px 4px;
+                text-decoration: none;
+                color: white;
+            }
         }
 
         .Skipped {

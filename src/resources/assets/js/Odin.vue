@@ -46,7 +46,9 @@ export default {
                         item = arr[index - 1]
                     }
 
-                    if ((keycode(e) == 'left' || keycode(e) == 'right' || keycode(e) == 'down' || keycode(e) == 'up') && item) {
+                    if (
+                        (keycode(e) == 'left' || keycode(e) == 'right' || keycode(e) == 'down' || keycode(e) == 'up') && item
+                    ) {
                         this.updateRev(item)
                         this.goTo($(`#${item}`)[0])
                     }
@@ -94,7 +96,6 @@ export default {
                 type: 'DELETE'
             }).done((res) => {
                 if (res.success) {
-                    this.showNotif(res.message)
                     $(`[rev-id="${id}"]`).remove()
                     arr.splice(index, 1)
 
@@ -106,7 +107,7 @@ export default {
                     }
 
                     this.toggleRev()
-                    return $('.revisions').remove()
+                    $('.revisions').remove()
                 }
 
                 this.showNotif(res.message)
