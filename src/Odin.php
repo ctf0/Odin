@@ -30,6 +30,9 @@ class Odin
         $multi = [];
 
         foreach ($rev->getModified() as $col => $data) {
+            $data['new'] = json_decode(array_get($rev->new_values, $col), true) ?: array_get($rev->new_values, $col);
+            $data['old'] = json_decode(array_get($rev->old_values, $col), true) ?: array_get($rev->old_values, $col);
+
             // put old first
             $data = array_reverse($data);
 
