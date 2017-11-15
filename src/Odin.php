@@ -57,7 +57,10 @@ class Odin
                 }
             }
 
-            if (is_array($new) || is_array($old)) {
+            if (is_array($new) ||
+                is_array($old) ||
+                (empty($old) && empty($new))
+            ) {
                 continue;
             }
 
@@ -82,7 +85,7 @@ class Odin
                 $old_keys = array_keys($data['old']);
 
                 if (count($new_keys) > count($old_keys)) {
-                    foreach (array_diff_key($new_keys, $old_keys) as $key) {
+                    foreach (array_diff($new_keys, $old_keys) as $key) {
                         $data['old'][$key] = null;
                     }
                 }
