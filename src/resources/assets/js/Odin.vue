@@ -1,6 +1,7 @@
 <script>
 export default {
     name: 'odin-comp',
+    props: ['odinTrans'],
     data() {
         return {
             selected: null,
@@ -116,8 +117,11 @@ export default {
                 this.showNotif(res.message, 'danger')
 
             }).fail(() => {
-                this.showNotif('Ajax Call Failed', 'black')
+                this.showNotif(this.trans('ajax_fail'), 'black')
             })
+        },
+        trans(key) {
+            return this.odinTrans[key]
         },
         showNotif(msg, s = 'success') {
 
@@ -125,12 +129,12 @@ export default {
             let duration = null
 
             switch (s) {
-                case 'danger':
-                    title = 'Error'
-                    break
-                default:
-                    title = 'Success'
-                    duration = 2
+            case 'danger':
+                title = 'Error'
+                break
+            default:
+                title = 'Success'
+                duration = 2
             }
 
             EventHub.fire('showNotif', {

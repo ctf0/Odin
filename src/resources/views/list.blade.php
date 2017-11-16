@@ -17,7 +17,7 @@
     </div>
 
     {{-- Odin --}}
-    <odin-comp inline-template>
+    <odin-comp inline-template :odin-trans="{{ json_encode(['ajax_fail'=>trans('Odin::messages.ajax_fail')]) }}">
         <div>
             {{-- overlay --}}
             <div class="odin-animated fadeIn" :class="{'shade' : selected}" @click="toggleRev()"></div>
