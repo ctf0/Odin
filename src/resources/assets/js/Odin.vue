@@ -129,6 +129,7 @@ export default {
             let duration = null
 
             switch (s) {
+            case 'black':
             case 'danger':
                 title = 'Error'
                 break
