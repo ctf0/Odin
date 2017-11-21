@@ -125,16 +125,17 @@ export default {
         },
         showNotif(msg, s = 'success') {
 
-            let title = ''
-            let duration = null
+            let title
+            let duration = 2
 
             switch (s) {
+            case 'black':
             case 'danger':
                 title = 'Error'
+                duration = null
                 break
             default:
                 title = 'Success'
-                duration = 2
             }
 
             EventHub.fire('showNotif', {
