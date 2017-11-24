@@ -40,6 +40,9 @@ npm install vue vuemit vue-notif vue-scrollto keycode --save
 
 ## Features
 
+- support single & nested values
+- delete & restore revisions.
+- auto clean audit table if `old_value & new_value` are empty
 - shortcuts
 
     |      navigation      |  keyboard  |    mouse (click)    |
@@ -95,3 +98,9 @@ new Vue({
     el: '#app'
 })
 ```
+
+### Note About `data:uri`
+
+- if you use `data:uri` in your revisionable content, saving it atm will give error because the `audits_table columns are in Text`, so to solve that simply change the column type to either `mediumText` or `longText` before migrating.
+
+    also note because `data:uri` is a render blocking, so opening the sidebar will have some delay.
