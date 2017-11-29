@@ -19,7 +19,7 @@ class OdinController extends Controller
         $revision = $this->getId($id);
         $model    = app($revision->auditable_type)->find($revision->auditable_id);
 
-        if ($revision->event == 'created') {
+        if ('created' == $revision->event) {
             foreach ($revision->getModified() as $col => $data) {
                 $model->$col = $data['new'];
             }
@@ -31,6 +31,25 @@ class OdinController extends Controller
 
         $model->save()
             ? session()->flash('status', trans('Odin::messages.res_success'))
+            : session()->flash('status', trans('Odin::messages.went_bad'));
+
+        return back();
+    }
+
+    /**
+     * restore soft deleted model.
+     *
+     * @param [type] $id [description]
+     *
+     * @return [type] [description]
+     */
+    public function restoreSoft($id)
+    {
+        $revision = $this->getId($id);
+        $model    = app($revision->auditable_type)->withTrashed()->find($revision->auditable_id);
+
+        $model->restore()
+            ? session()->flash('status', trans('Odin::messages.res_model_success'))
             : session()->flash('status', trans('Odin::messages.went_bad'));
 
         return back();

@@ -1,25 +1,12 @@
-$.ajaxSetup({
-    cache: false,
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-})
-
 /*                Libs                */
 window.Vue = require('vue')
 window.EventHub = require('vuemit')
 window.keycode = require('keycode')
-Vue.use(require('vue-scrollto'), {
-    container: '.compare-page',
-    duration: 180,
-    easing: 'ease',
-    offset: -28,
-    cancelable: true,
-    onDone: false,
-    onCancel: false,
-    x: false,
-    y: true
-})
+window.axios = require('axios')
+axios.defaults.headers.common = {
+    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+    'X-Requested-With': 'XMLHttpRequest'
+}
 
 /*                Components                */
 Vue.component('OdinComp', require('./Odin.vue'))

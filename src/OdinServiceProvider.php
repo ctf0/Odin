@@ -2,6 +2,7 @@
 
 namespace ctf0\Odin;
 
+use OwenIt\Auditing\Models\Audit;
 use Illuminate\Support\ServiceProvider;
 
 class OdinServiceProvider extends ServiceProvider
@@ -14,6 +15,8 @@ class OdinServiceProvider extends ServiceProvider
         $this->file = app('files');
 
         $this->packagePublish();
+
+        $this->auditEvent();
 
         // append extra data
         if (!app('cache')->store('file')->has('ct-odin')) {
@@ -46,6 +49,15 @@ class OdinServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/resources/views' => resource_path('views/vendor/Odin'),
         ], 'views');
+    }
+
+    protected function auditEvent()
+    {
+        Audit::creating(function (Audit $model) {
+            if (empty($model->old_values) && empty($model->new_values)) {
+                return false;
+            }
+        });
     }
 
     /**

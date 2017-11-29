@@ -9,18 +9,20 @@ trait Revisions
 {
     use Auditable;
 
-    protected $auditStrict  = true;
-    protected $auditExclude = ['user_id', 'id'];
+    protected $auditStrict = true;
+
+    public function getAuditExclude(): array
+    {
+        $main  = $this->auditExclude ?? [];
+        $extra = [config('audit.user.foreign_key'), 'id'];
+        $dates = $this->getDates();
+
+        return array_merge($main, $extra, $dates);
+    }
 
     // Accessor for Revisions
     public function getRevisionsAttribute()
     {
-        return $this->audits()->with('user')->get()->filter(function ($e) {
-            if (empty($e->old_values) && empty($e->new_values)) {
-                return Audit::find($e->id)->delete();
-            }
-
-            return $e;
-        })->reverse();
+        return $this->audits()->with('user')->get()->reverse();
     }
 }

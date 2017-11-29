@@ -1,122 +1,120 @@
 <script>
 export default {
     name: 'odin-comp',
-    props: ['odinTrans'],
+    props: ['odinTrans', 'revList'],
     data() {
         return {
             selected: null,
-            list : []
+            list : this.revList
         }
     },
     methods: {
         // navigate
         navigation() {
             $('html').keydown((e) => {
-                let f = $('.timeline-header').first()
-                let l = $('.timeline-header').last()
-
-                // first
-                if (keycode(e) == 'home' && f.length) {
-                    this.updateRev(f[0].id)
-                    this.goTo(f[0])
-                }
-
-                // last
-                if (keycode(e) == 'end' && l.length) {
-                    this.updateRev(l[0].id)
-                    this.goTo(l[0])
-                }
+                let cur = this.selected
+                let arr = this.list
+                let index = arr.indexOf(cur)
+                let newId = null
 
                 // hide
-                if (keycode(e) == 'esc' && this.selected) {
+                if (keycode(e) == 'esc' && cur) {
                     this.toggleRev()
                 }
 
-                // next / prev
-                let arr = this.list
-                let cur = this.selected
-                let index = arr.indexOf(cur)
-                let item = null
-
                 if (arr.length > 1) {
+                    // first
+                    if (keycode(e) == 'home') {
+                        newId = arr[0]
+                    }
+
+                    // last
+                    if (keycode(e) == 'end') {
+                        newId = arr[arr.length - 1]
+                    }
+
+                    // next
                     if (keycode(e) == 'right' || keycode(e) == 'down') {
-                        item = arr[index + 1]
+                        newId = arr[index + 1]
                     }
 
+                    // prev
                     if (keycode(e) == 'left' || keycode(e) == 'up') {
-                        item = arr[index - 1]
+                        newId = arr[index - 1]
                     }
 
-                    if ((
+                    if (
+                        keycode(e) == 'home' ||
+                        keycode(e) == 'end' ||
                         keycode(e) == 'left' ||
                         keycode(e) == 'right' ||
                         keycode(e) == 'down' ||
                         keycode(e) == 'up'
-                    ) && item) {
-                        this.updateRev(item)
-                        this.goTo($(`#${item}`)[0])
+                    ) {
+                        if (!newId) {
+                            return
+                        }
+
+                        this.updateRev(newId)
+                        this.goTo(`${newId}`)
                     }
                 }
             })
         },
-        goTo(item) {
-            this.$scrollTo(item)
+        goTo(id) {
+            document.getElementById(id).scrollIntoView()
+            this.$refs.container.scrollTop -= 28
         },
 
         // rev
-        updateRev(item) {
-            this.selected = item
+        updateRev(id) {
+            this.selected = id
         },
-        toggleRev(item = null) {
-            if (!item) {
-                this.list = []
+        toggleRev(id = null) {
+            if (!id) {
                 this.selected = null
                 $('html').unbind()
                 return EventHub.fire('odin-hide')
             }
 
             EventHub.fire('odin-show')
-            this.updateRev(item)
+            this.updateRev(id)
             this.$nextTick(() => {
-                this.goTo(`#${item}`)
+                this.goTo(`${id}`)
                 this.navigation()
-            })
-
-            // so we can use left/right
-            let that = this
-            $('.timeline-header').each(function() {
-                that.list.push($(this)[0].id)
             })
         },
 
         // form
         removeRev(e) {
             let arr = this.list
-            let id = e.target.dataset.id
+            let id = parseInt(e.target.dataset.id)
             let index = arr.indexOf(id)
 
-            $.ajax({
-                url: e.target.action,
-                type: 'DELETE'
-            }).done((res) => {
-                if (res.success) {
-                    this.showNotif(res.message)
-                    $(`[rev-id="${id}"]`).remove()
+            axios({
+                method: 'DELETE',
+                url: e.target.action
+            }).then(({data}) => {
+                if (data.success) {
+                    this.showNotif(data.message)
+                    this.$refs[`rev-${id}`].map((e) => {
+                        e.remove()
+                    })
                     arr.splice(index, 1)
 
                     if (arr.length) {
                         let newIndex = arr[0]
-                        this.selected = newIndex
-                        return this.goTo(`#${newIndex}`)
+                        this.updateRev(newIndex)
+                        return this.goTo(`${newIndex}`)
                     }
 
                     this.toggleRev()
-                    return $('.revisions').remove()
+                    return this.$refs.revisions.remove()
                 }
 
-                this.showNotif(res.message, 'danger')
+                this.showNotif(data.message, 'danger')
 
-            }).fail(() => {
+            }).catch(() => {
                 this.showNotif(this.trans('ajax_fail'), 'black')
             })
         },

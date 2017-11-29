@@ -1,0 +1,8 @@
+- remove vue-scrollto
+- use axios instead of jquery ajax
+- jquery now only handle the (keydown events) “if anyone can convert it to pure js i would deeply appreciate it”.
+- fix diff for soft deletes
+- add support to restore soft deleted items “a new button was added for better UX”
+- small improvements 
+- update readme
+- update assets

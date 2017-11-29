@@ -12,12 +12,16 @@ is a GUI to manage model revisions.
 
 - `composer require ctf0/odin`
 
-- (Laravel < 5.5) add the service provider
+- (Laravel < 5.5) add the service provider & facade
 
 ```php
 'providers' => [
     ctf0\Odin\OdinServiceProvider::class,
-]
+];
+
+'aliases' => [
+    'Odin' => \ctf0\Odin\Facade\Odin::class,
+];
 ```
 
 - publish the package assets with
@@ -28,14 +32,14 @@ is a GUI to manage model revisions.
     + package routes to `routes/web.php`
     + package assets compiling to `webpack.mix.js`
 
-- check http://www.laravel-auditing.com/docs/4.1/installation for configuration
+- check http://www.laravel-auditing.com/docs/5.0/installation for configuration
 
 - install dependencies
 
 ```bash
-yarn add vue vuemit vue-notif vue-scrollto keycode
+yarn add vue axios vuemit vue-notif keycode
 # or
-npm install vue vuemit vue-notif vue-scrollto keycode --save
+npm install vue axios vuemit vue-notif keycode --save
 ```
 
 ## Features
@@ -63,6 +67,7 @@ npm install vue vuemit vue-notif vue-scrollto keycode --save
 ## Usage
 
 - add `Revisions` trait & `AuditableContract` contract to your model
+    + for `User model` plz check http://www.laravel-auditing.com/docs/5.0/general-configuration
 
 ```php
 
