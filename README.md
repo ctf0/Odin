@@ -46,7 +46,8 @@ npm install vue axios vuemit vue-notif keycode --save
 
 - support single & nested values
 - delete & restore revisions.
-- auto clean audit table if `old_value & new_value` are empty
+- dont save the audit record if the model `old_value & new_value` are empty.
+- support soft deletes.
 - shortcuts
 
     |      navigation      |  keyboard  |    mouse (click)    |
