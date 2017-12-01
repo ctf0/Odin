@@ -44,7 +44,7 @@ npm install vue axios vuemit vue-notif keycode --save
 
 ## Features
 
-- support single & nested values
+- support single & nested values.
 - delete & restore revisions.
 - dont save the audit record if the model `old_value & new_value` are empty.
 - support soft deletes.
@@ -107,6 +107,6 @@ new Vue({
 
 ### Note About `data:uri`
 
-- if you use `data:uri` in your revisionable content, saving it atm will give error because the `audits_table columns are in Text`, so to solve that simply change the column type to either `mediumText` or `longText` before migrating.
+- if you use `data:uri` in your revisionable content, change [`audits_table`](https://github.com/owen-it/laravel-auditing/blob/958a6edd4cd4f9d61aa34f288f708644e150e866/database/migrations/audits.stub#L33-L34) columns type to either `mediumText` or `longText` before migrating.
 
     also note because `data:uri` is a render blocking, so opening the sidebar will have some delay.
