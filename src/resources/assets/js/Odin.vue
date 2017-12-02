@@ -114,7 +114,8 @@ export default {
 
                 this.showNotif(data.message, 'danger')
 
-            }).catch(() => {
+            }).catch((err) => {
+                console.error(err)
                 this.showNotif(this.trans('ajax_fail'), 'black')
             })
         },
