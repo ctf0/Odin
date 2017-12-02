@@ -37,9 +37,9 @@ is a GUI to manage model revisions.
 - install dependencies
 
 ```bash
-yarn add vue axios vuemit vue-notif keycode
+yarn add vue axios vuemit vue-notif vue-multi-ref keycode
 # or
-npm install vue axios vuemit vue-notif keycode --save
+npm install vue axios vuemit vue-notif vue-multi-ref keycode --save
 ```
 
 ## Features
@@ -105,8 +105,10 @@ new Vue({
 })
 ```
 
-### Note About `data:uri`
+### Notes For `data:uri`
 
-- if you use `data:uri` in your revisionable content, change [`audits_table`](https://github.com/owen-it/laravel-auditing/blob/958a6edd4cd4f9d61aa34f288f708644e150e866/database/migrations/audits.stub#L33-L34) columns type to either `mediumText` or `longText` before migrating.
+- if you use `data:uri` in your revisionable content, change [`audits_table`](https://github.com/owen-it/laravel-auditing/blob/958a6edd4cd4f9d61aa34f288f708644e150e866/database/migrations/audits.stub#L33-L34) columns type to either `mediumText` or `longText` before migrating to avoid future errors of long data.
 
-    also note because `data:uri` is a render blocking, so opening the sidebar will have some delay.
+- because `data:uri` is render blocking & isn't readable by humans, we truncate it to 75 char max **(the smallest stable data:uri is 78 char)**,
+
+    note that this ***ONLY*** take effect when displaying the revision diff, we still save the full code to the db as usual.

@@ -9,8 +9,6 @@ trait Revisions
 {
     use Auditable;
 
-    protected $auditStrict = true;
-
     public function getAuditExclude(): array
     {
         $main  = $this->auditExclude ?? [];

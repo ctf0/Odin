@@ -6,8 +6,6 @@ require_once dirname(__FILE__) . '/../php-diff/SideBySide.php';
 
 class Odin
 {
-    use Routes;
-
     /**
      * render revision diff data to table.
      *
@@ -59,10 +57,7 @@ class Odin
                 }
             }
 
-            if (is_array($new) ||
-                is_array($old) ||
-                (empty($old) && empty($new))
-            ) {
+            if (is_array($new) || is_array($old) || (empty($old) && empty($new))) {
                 continue;
             }
 
@@ -132,30 +127,33 @@ class Odin
      * Compares two strings or string arrays, and return their differences.
      * This is a wrapper of the [phpspec/php-diff].
      *
-     * @param string|array $lines1 the first string or string array to be compared. If it is a string,
-     *                             it will be converted into a string array by breaking at newlines.
-     * @param string|array $lines2 the second string or string array to be compared. If it is a string,
-     *                             it will be converted into a string array by breaking at newlines.
+     * @param string|array $old the first string or string array to be compared. If it is a string,
+     *                          it will be converted into a string array by breaking at newlines.
+     * @param string|array $new the second string or string array to be compared. If it is a string,
+     *                          it will be converted into a string array by breaking at newlines.
      *
      * @return string the comparison result
      */
-    protected function renderDiff($lines1, $lines2)
+    protected function renderDiff($old, $new)
     {
-        if (!is_array($lines1)) {
-            $lines1 = explode("\n", $lines1);
+        if (!is_array($old)) {
+            $old = explode("\n", $old);
         }
-        if (!is_array($lines2)) {
-            $lines2 = explode("\n", $lines2);
-        }
-
-        foreach ($lines1 as $i => $line) {
-            $lines1[$i] = rtrim($line, "\r\n");
-        }
-        foreach ($lines2 as $i => $line) {
-            $lines2[$i] = rtrim($line, "\r\n");
+        if (!is_array($new)) {
+            $new = explode("\n", $new);
         }
 
-        $diff = new \Diff($lines1, $lines2);
+        foreach ($old as $i => $line) {
+            $old[$i] = rtrim($line, "\r\n");
+        }
+        foreach ($new as $i => $line) {
+            $new[$i] = rtrim($line, "\r\n");
+        }
+
+        $old = preg_replace('/(?<=data:image.{65}).*?"/', '..."', $old);
+        $new = preg_replace('/(?<=data:image.{65}).*?"/', '..."', $new);
+
+        $diff = new \Diff($old, $new);
 
         return $diff->render(new \Diff_Renderer_Html_SideBySide());
     }

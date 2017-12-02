@@ -32,7 +32,7 @@
                 <div class="column is-2"></div>
                 <div class="column is-10 revisions" ref="revisions">
                     {{-- list --}}
-                    <table class="table is-narrow">
+                    <table class="table is-hoverable is-narrow">
                         <tbody>
                             @foreach ($revisions as $rev)
                                 @php
@@ -41,20 +41,17 @@
                                     $time = Carbon\Carbon::parse($rev->created_at);
                                 @endphp
 
-                                <template v-for="i in 1">
-                                    <tr class="revisions-link"
-                                        ref="rev-{{ $id }}"
-                                        @click="toggleRev({{ $id }})">
-                                        <td class="has-text-center">
-                                            <figure class="image is-24x24">
-                                                <img src="{{ $user->avatar }}">
-                                            </figure>
-                                        </td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $time->diffForHumans() }} <strong>"{{ $time->format('F j, Y @ h:i:s A') }}"</strong>
-                                        </td>
-                                    </tr>
-                                </template>
+                                <tr class="revisions-link"
+                                    v-multi-ref="'rev-{{ $id }}'"
+                                    @click="toggleRev({{ $id }})">
+                                    <td class="has-text-center">
+                                        <figure class="image is-24x24">
+                                            <img src="{{ $user->avatar }}">
+                                        </figure>
+                                    </td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $time->diffForHumans() }} <strong>"{{ $time->format('F j, Y @ h:i:s A') }}"</strong></td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -77,76 +74,65 @@
                                     $class = $rev->event == 'created' ? 'is-link is-outlined' : 'is-warning';
                                 @endphp
 
-                                <template v-for="i in 1">
-                                    <li class="timeline-header"
-                                        id="{{ $id }}"
-                                        ref="rev-{{ $id }}">
-                                        <button class="tag is-rounded is-medium is-black revisions-link"
-                                            @click.stop="updateRev({{ $id }}), goTo('{{ $id }}')">{{ $time->diffForHumans() }}</button>
-                                    </li>
+                                <li class="timeline-header"
+                                    id="{{ $id }}"
+                                    v-multi-ref="'rev-{{ $id }}'">
+                                    <button class="tag is-rounded is-medium is-black revisions-link"
+                                        @click.stop="updateRev({{ $id }}), goTo('{{ $id }}')">
+                                        {{ $time->diffForHumans() }}
+                                    </button>
+                                </li>
 
-                                    <li class="timeline-item" ref="rev-{{ $id }}">
-                                        <div class="timeline-marker is-icon" :class="{'is-link' : selected == '{{ $id }}'}">
-                                            <template v-if="selected == '{{ $id }}'">
-                                                <i class="fa fa-flag"></i>
-                                            </template>
+                                <li class="timeline-item" v-multi-ref="'rev-{{ $id }}'">
+                                    <div class="timeline-marker is-icon" :class="{'is-link' : selected == '{{ $id }}'}">
+                                        <template v-if="selected == '{{ $id }}'">
+                                            <i class="fa fa-flag"></i>
+                                        </template>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="heading">
+                                            <p><span class="title">{{ $rev->event }}</span></p>
+                                            <p><span class="subtitle is-6">{{ $time->format('F j, Y @ h:i:s A') }}</span></p>
+                                            <p><small class="subtitle is-6">By</small> <span class="subtitle is-5">{{ $user->name }}</span></p>
                                         </div>
-                                        <div class="timeline-content">
-                                            <div class="heading">
-                                                <p><span class="title">{{ $rev->event }}</span></p>
-                                                <p><span class="subtitle is-6">{{ $time->format('F j, Y @ h:i:s A') }}</span></p>
-                                                <p><small class="subtitle is-6">By</small> <span class="subtitle is-5">{{ $user->name }}</span></p>
-                                            </div>
 
-                                            <div>
-                                                {{-- data --}}
-                                                <section class="compare-page__body">
-                                                    @if ($html)
-                                                        {!! $html !!}
-                                                    @else
-                                                        <p class="title is-5 notification is-info is-marginless">
-                                                            {{ trans('Odin::messages.no_diff') }}
-                                                        </p>
+                                        <div>
+                                            {{-- data --}}
+                                            <section class="compare-page__body">
+                                                @if ($html)
+                                                    {!! $html !!}
+                                                @else
+                                                    <p class="title is-5 notification is-info is-marginless">
+                                                        {{ trans('Odin::messages.no_diff') }}
+                                                    </p>
+                                                @endif
+                                            </section>
+
+                                            {{-- ops --}}
+                                            @if (count($revisions) > 1)
+                                                <div class="compare-page__footer">
+
+                                                    @if ($rev->event == 'created')
+                                                        <p class="title is-6">{{ trans('Odin::messages.reset_data') }}</p>
                                                     @endif
-                                                </section>
 
-                                                {{-- ops --}}
-                                                @if (count($revisions) > 1)
-                                                    <div class="compare-page__footer">
-
-                                                        @if ($rev->event == 'created')
-                                                            <p class="title is-6">{{ trans('Odin::messages.reset_data') }}</p>
-                                                        @endif
-
-                                                        <div class="level">
-                                                            @if ($html)
-                                                                <div class="level-left"></div>
-                                                                <div class="level-right">
-                                                                    <div class="level-item">
-                                                                        @if ($rev->event == 'deleted')
-                                                                            {{ Form::open(['route' => ['odin.restore.soft', $id], 'method' => 'PUT']) }}
-                                                                                <button class="button is-success">{{ trans('Odin::messages.res_model') }}</button>
-                                                                            {{ Form::close() }}
-                                                                        @else
-                                                                            {{ Form::open(['route' => ['odin.restore', $id]]) }}
-                                                                                <button class="button {{ $class }}">{{ trans('Odin::messages.res') }}</button>
-                                                                            {{ Form::close() }}
-                                                                        @endif
-                                                                    </div>
-
-                                                                    <div class="level-item">
-                                                                        {{ Form::open([
-                                                                            'route' => ['odin.remove', $id],
-                                                                            'method' => 'DELETE',
-                                                                            'data-id' => $id,
-                                                                            '@submit.prevent' => 'removeRev($event)'
-                                                                        ]) }}
-                                                                            <button class="button is-danger">{{ trans('Odin::messages.del') }}</button>
+                                                    <div class="level">
+                                                        @if ($html)
+                                                            <div class="level-left"></div>
+                                                            <div class="level-right">
+                                                                <div class="level-item">
+                                                                    @if ($rev->event == 'deleted')
+                                                                        {{ Form::open(['route' => ['odin.restore.soft', $id], 'method' => 'PUT']) }}
+                                                                            <button class="button is-success">{{ trans('Odin::messages.res_model') }}</button>
                                                                         {{ Form::close() }}
-                                                                    </div>
+                                                                    @else
+                                                                        {{ Form::open(['route' => ['odin.restore', $id]]) }}
+                                                                            <button class="button {{ $class }}">{{ trans('Odin::messages.res') }}</button>
+                                                                        {{ Form::close() }}
+                                                                    @endif
                                                                 </div>
-                                                            @else
-                                                                <div class="level-left">
+
+                                                                <div class="level-item">
                                                                     {{ Form::open([
                                                                         'route' => ['odin.remove', $id],
                                                                         'method' => 'DELETE',
@@ -156,15 +142,26 @@
                                                                         <button class="button is-danger">{{ trans('Odin::messages.del') }}</button>
                                                                     {{ Form::close() }}
                                                                 </div>
-                                                                <div class="level-right"></div>
-                                                            @endif
-                                                        </div>
+                                                            </div>
+                                                        @else
+                                                            <div class="level-left">
+                                                                {{ Form::open([
+                                                                    'route' => ['odin.remove', $id],
+                                                                    'method' => 'DELETE',
+                                                                    'data-id' => $id,
+                                                                    '@submit.prevent' => 'removeRev($event)'
+                                                                ]) }}
+                                                                    <button class="button is-danger">{{ trans('Odin::messages.del') }}</button>
+                                                                {{ Form::close() }}
+                                                            </div>
+                                                            <div class="level-right"></div>
+                                                        @endif
                                                     </div>
-                                                @endif
-                                            </div>
+                                                </div>
+                                            @endif
                                         </div>
-                                    </li>
-                                </template>
+                                    </div>
+                                </li>
                             @endforeach
                         </ul>
                     </div>

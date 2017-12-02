@@ -4,7 +4,7 @@ namespace ctf0\Odin;
 
 use Illuminate\Support\Facades\Route;
 
-trait Routes
+class OdinRoutes
 {
     public static function routes()
     {

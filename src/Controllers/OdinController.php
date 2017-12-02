@@ -17,16 +17,13 @@ class OdinController extends Controller
     public function restore($id)
     {
         $revision = $this->getId($id);
-        $model    = app($revision->auditable_type)->find($revision->auditable_id);
 
         if ('created' == $revision->event) {
-            foreach ($revision->getModified() as $col => $data) {
-                $model->$col = $data['new'];
-            }
+            // use new
+            $model = app($revision->auditable_type)->find($revision->auditable_id)->transitionTo($revision);
         } else {
-            foreach ($revision->getModified() as $col => $data) {
-                $model->$col = $data['old'];
-            }
+            // use old
+            $model = app($revision->auditable_type)->find($revision->auditable_id)->transitionTo($revision, true);
         }
 
         $model->save()

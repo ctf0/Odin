@@ -72,7 +72,7 @@ class OdinServiceProvider extends ServiceProvider
         $search     = 'Odin';
 
         if ($this->checkExist($route_file, $search)) {
-            $data = "\n// Odin\nctf0\Odin\Odin::routes();";
+            $data = "\n// Odin\nctf0\Odin\OdinRoutes::routes();";
 
             $this->file->append($route_file, $data);
         }

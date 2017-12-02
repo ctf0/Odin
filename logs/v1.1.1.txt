@@ -1,0 +1,4 @@
+- odin routes is now a class of its own “ctf0\Odin\OdinRoutes::routes();”
+- better display of data:uri
+- update readme
+- update assets
