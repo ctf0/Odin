@@ -10,56 +10,54 @@ export default {
     },
     methods: {
         // navigate
-        navigation() {
-            $('html').keydown((e) => {
-                let cur = this.selected
-                let arr = this.list
-                let index = arr.indexOf(cur)
-                let newId = null
+        navigation(e) {
+            let cur = this.selected
+            let arr = this.list
+            let index = arr.indexOf(cur)
+            let newId = null
 
-                // hide
-                if (keycode(e) == 'esc' && cur) {
-                    this.toggleRev()
+            // hide
+            if (keycode(e) == 'esc' && cur) {
+                this.toggleRev()
+            }
+
+            if (arr.length > 1) {
+                // first
+                if (keycode(e) == 'home') {
+                    newId = arr[0]
                 }
 
-                if (arr.length > 1) {
-                    // first
-                    if (keycode(e) == 'home') {
-                        newId = arr[0]
-                    }
-
-                    // last
-                    if (keycode(e) == 'end') {
-                        newId = arr[arr.length - 1]
-                    }
-
-                    // next
-                    if (keycode(e) == 'right' || keycode(e) == 'down') {
-                        newId = arr[index + 1]
-                    }
-
-                    // prev
-                    if (keycode(e) == 'left' || keycode(e) == 'up') {
-                        newId = arr[index - 1]
-                    }
-
-                    if (
-                        keycode(e) == 'home' ||
-                        keycode(e) == 'end' ||
-                        keycode(e) == 'left' ||
-                        keycode(e) == 'right' ||
-                        keycode(e) == 'down' ||
-                        keycode(e) == 'up'
-                    ) {
-                        if (!newId) {
-                            return
-                        }
-
-                        this.updateRev(newId)
-                        this.goTo(`${newId}`)
-                    }
+                // last
+                if (keycode(e) == 'end') {
+                    newId = arr[arr.length - 1]
                 }
-            })
+
+                // next
+                if (keycode(e) == 'right' || keycode(e) == 'down') {
+                    newId = arr[index + 1]
+                }
+
+                // prev
+                if (keycode(e) == 'left' || keycode(e) == 'up') {
+                    newId = arr[index - 1]
+                }
+
+                if (
+                    keycode(e) == 'home' ||
+                    keycode(e) == 'end' ||
+                    keycode(e) == 'left' ||
+                    keycode(e) == 'right' ||
+                    keycode(e) == 'down' ||
+                    keycode(e) == 'up'
+                ) {
+                    if (!newId) {
+                        return
+                    }
+
+                    this.updateRev(newId)
+                    this.goTo(`${newId}`)
+                }
+            }
         },
         goTo(id) {
             document.getElementById(id).scrollIntoView()
@@ -73,7 +71,7 @@ export default {
         toggleRev(id = null) {
             if (!id) {
                 this.selected = null
-                $('html').unbind()
+                document.removeEventListener('keydown', this.navigation)
                 return EventHub.fire('odin-hide')
             }
 
@@ -81,7 +79,7 @@ export default {
             this.updateRev(id)
             this.$nextTick(() => {
                 this.goTo(`${id}`)
-                this.navigation()
+                document.addEventListener('keydown', this.navigation)
             })
         },
 
