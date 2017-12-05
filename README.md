@@ -37,9 +37,9 @@ is a GUI to manage model revisions.
 - install dependencies
 
 ```bash
-yarn add vue axios vuemit vue-notif vue-multi-ref keycode
+yarn add vue axios vuemit vue-notif vue-multi-ref keycode smoothscroll-polyfill
 # or
-npm install vue axios vuemit vue-notif vue-multi-ref keycode --save
+npm install vue axios vuemit vue-notif vue-multi-ref keycode smoothscroll-polyfill --save
 ```
 
 ## Features

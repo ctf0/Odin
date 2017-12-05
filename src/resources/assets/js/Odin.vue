@@ -60,8 +60,8 @@ export default {
             }
         },
         goTo(id) {
-            document.getElementById(id).scrollIntoView()
-            this.$refs.container.scrollTop -= 28
+            let el = document.getElementById(id).offsetTop - this.$refs.container.scrollTop - 28
+            this.$refs.container.scrollBy({ top: el, left: 0, behavior: 'smooth' })
         },
 
         // rev

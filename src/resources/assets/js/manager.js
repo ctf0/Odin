@@ -1,3 +1,7 @@
+// scrollIntoView({behavior: 'smooth'}) polyfill
+// window.__forceSmoothScrollPolyfill__ = true
+require('smoothscroll-polyfill').polyfill()
+
 /*                Libs                */
 window.Vue = require('vue')
 window.EventHub = require('vuemit')
