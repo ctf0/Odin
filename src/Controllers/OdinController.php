@@ -8,6 +8,21 @@ use App\Http\Controllers\Controller;
 class OdinController extends Controller
 {
     /**
+     * preview old model data.
+     *
+     * @param [type] $id [description]
+     *
+     * @return [type] [description]
+     */
+    public function preview($id)
+    {
+        $revision = $this->getId($id);
+        $data     = app($revision->auditable_type)->find($revision->auditable_id)->transitionTo($revision, true);
+
+        return view(request('template'), compact('data'));
+    }
+
+    /**
      * restore a revision.
      *
      * @param mixed $id
@@ -74,6 +89,13 @@ class OdinController extends Controller
         ]);
     }
 
+    /**
+     * helper.
+     *
+     * @param [type] $id [description]
+     *
+     * @return [type] [description]
+     */
     protected function getId($id)
     {
         return Audit::find($id);

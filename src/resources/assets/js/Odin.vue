@@ -60,8 +60,8 @@ export default {
             }
         },
         goTo(id) {
-            let el = document.getElementById(id).offsetTop - this.$refs.container.scrollTop - 28
-            this.$refs.container.scrollBy({ top: el, left: 0, behavior: 'smooth' })
+            let count = document.getElementById(id).offsetTop - this.$refs.container.scrollTop - 28
+            this.$refs.container.scrollBy({top: count, left: 0, behavior: 'smooth'})
         },
 
         // rev

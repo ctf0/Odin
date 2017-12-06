@@ -46,8 +46,9 @@ npm install vue axios vuemit vue-notif vue-multi-ref keycode smoothscroll-polyfi
 
 - support single & nested values.
 - delete & restore revisions.
-- dont save the audit record if the model `old_value & new_value` are empty.
+- don't save the audit record if the model `old_value & new_value` are empty.
 - support soft deletes.
+- [preview revisions](https://github.com/ctf0/Odin/wiki/Preview-Revision).
 - shortcuts
 
     |      navigation      |  keyboard  |    mouse (click)    |

@@ -1,0 +1,5 @@
+- make sure we don’t ignore all dates casting, only ('created_at', 'updated_at', 'deleted_at’)
+- added an option to preview revisions “https://github.com/ctf0/Odin/wiki/Preview-Revision”
+- update assets
+- update read me
+- update wiki

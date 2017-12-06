@@ -1,1 +1,0 @@
-- we are now jQuery free :metal:

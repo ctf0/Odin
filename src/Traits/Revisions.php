@@ -13,7 +13,7 @@ trait Revisions
     {
         $main  = $this->auditExclude ?? [];
         $extra = [config('audit.user.foreign_key'), 'id'];
-        $dates = $this->getDates();
+        $dates = ['created_at', 'updated_at', 'deleted_at'];
 
         return array_merge($main, $extra, $dates);
     }
