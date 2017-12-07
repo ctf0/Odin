@@ -101,7 +101,7 @@ export default {
                     arr.splice(index, 1)
 
                     if (arr.length) {
-                        let newIndex = arr[0]
+                        let newIndex = arr[index] || arr[0]
                         this.updateRev(newIndex)
                         return this.goTo(`${newIndex}`)
                     }
