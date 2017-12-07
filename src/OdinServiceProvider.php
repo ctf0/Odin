@@ -4,6 +4,7 @@ namespace ctf0\Odin;
 
 use OwenIt\Auditing\Models\Audit;
 use Illuminate\Support\ServiceProvider;
+use ctf0\Odin\Commands\GarbageCollector;
 
 class OdinServiceProvider extends ServiceProvider
 {
@@ -15,15 +16,15 @@ class OdinServiceProvider extends ServiceProvider
         $this->file = app('files');
 
         $this->packagePublish();
-
         $this->auditEvent();
+        $this->command();
+
+        $this->app['odin'];
 
         // append extra data
         if (!app('cache')->store('file')->has('ct-odin')) {
             $this->autoReg();
         }
-
-        $this->app['odin'];
     }
 
     /**
@@ -51,6 +52,11 @@ class OdinServiceProvider extends ServiceProvider
         ], 'views');
     }
 
+    /**
+     * dont save audit when old & new are empty.
+     *
+     * @return [type] [description]
+     */
     protected function auditEvent()
     {
         Audit::creating(function (Audit $model) {
@@ -58,6 +64,18 @@ class OdinServiceProvider extends ServiceProvider
                 return false;
             }
         });
+    }
+
+    /**
+     * clear audits table of permanently deleted auditable models.
+     *
+     * @return [type] [description]
+     */
+    protected function command()
+    {
+        $this->commands([
+            GarbageCollector::class,
+        ]);
     }
 
     /**

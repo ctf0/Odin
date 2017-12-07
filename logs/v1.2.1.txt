@@ -1,0 +1,4 @@
+- fix withTrashed method error for models that don’t have soft delete.
+- allow preview even when item is soft deleted.
+- add command to clear permanently deleted models audits. “odin:gc”
+- update readme

@@ -48,7 +48,17 @@ npm install vue axios vuemit vue-notif vue-multi-ref keycode smoothscroll-polyfi
 - delete & restore revisions.
 - don't save the audit record if the model `old_value & new_value` are empty.
 - support soft deletes.
-- [preview revisions](https://github.com/ctf0/Odin/wiki/Preview-Revision).
+- [revision preview](https://github.com/ctf0/Odin/wiki/Preview-Revision).
+- clear audits for permanently deleted models.
+    ```bash
+    php artisan odin:gc
+    ```
+
+    which can be scheduled as well
+    ```php
+    $schedule->command('odin:gc')->sundays();
+    ```
+
 - shortcuts
 
     |      navigation      |  keyboard  |    mouse (click)    |

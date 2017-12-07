@@ -17,7 +17,10 @@ class OdinController extends Controller
     public function preview($id)
     {
         $revision = $this->getId($id);
-        $data     = app($revision->auditable_type)->withTrashed()->find($revision->auditable_id)->transitionTo($revision, true);
+        $model    = app($revision->auditable_type);
+        $data     = in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($model))
+            ? $model->withTrashed()->find($revision->auditable_id)->transitionTo($revision, true)
+            : $model->find($revision->auditable_id)->transitionTo($revision, true);
 
         return view(request('template'), compact('data'));
     }
