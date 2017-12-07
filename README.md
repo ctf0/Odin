@@ -1,10 +1,14 @@
-<p align="center">
-    <img src="https://user-images.githubusercontent.com/7388088/32410265-fe5f8d72-c1c4-11e7-97d7-c7693d44f961.png">
-</p>
-
 # Odin
 
-is a GUI to manage model revisions.
+[![Latest Stable Version](https://poser.pugx.org/ctf0/odin/v/stable)](https://packagist.org/packages/ctf0/odin) [![Total Downloads](https://poser.pugx.org/ctf0/odin/downloads)](https://packagist.org/packages/ctf0/odin)
+
+Manage model revisions with ease.
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/7388088/33772810-8c13e864-dc3e-11e7-9bf3-bbc969ea386d.jpg">
+</p>
+
+<br>
 
 ## Installation
 
@@ -42,6 +46,19 @@ yarn add vue axios vuemit vue-notif vue-multi-ref keycode smoothscroll-polyfill
 npm install vue axios vuemit vue-notif vue-multi-ref keycode smoothscroll-polyfill --save
 ```
 
+- add this one liner to your main js file and run `npm run watch` to compile your `js/css` files.
+    + if you are having issues [Check](https://ctf0.wordpress.com/2017/09/12/laravel-mix-es6/).
+
+```js
+require('./../vendor/Odin/js/manager')
+
+new Vue({
+    el: '#app'
+})
+```
+
+<br>
+
 ## Features
 
 - support single & nested values.
@@ -76,6 +93,8 @@ npm install vue axios vuemit vue-notif vue-multi-ref keycode smoothscroll-polyfi
     | odin-show   | when revision is showen |
     | odin-hide   | when revision is hidden |
 
+<br>
+
 ## Usage
 
 - add `Revisions` trait & `AuditableContract` contract to your model
@@ -103,23 +122,12 @@ class Post extends Model implements AuditableContract
 @endif
 ```
 
-- for styling we use ***bulma***
+<br>
 
-- add this one liner to your main js file and run `npm run watch` to compile your `js/css` files.
-    + if you are having issues [Check](https://ctf0.wordpress.com/2017/09/12/laravel-mix-es6/).
-
-```js
-require('./../vendor/Odin/js/manager')
-
-new Vue({
-    el: '#app'
-})
-```
-
-### Notes For `data:uri`
+## Notes For `data:uri`
 
 - if you use `data:uri` in your revisionable content, change [`audits_table`](https://github.com/owen-it/laravel-auditing/blob/958a6edd4cd4f9d61aa34f288f708644e150e866/database/migrations/audits.stub#L33-L34) columns type to either `mediumText` or `longText` before migrating to avoid future errors of long data.
 
 - because `data:uri` is render blocking & isn't readable by humans, we truncate it to 75 char max **(the smallest stable data:uri is 78 char)**,
 
-    note that this ***ONLY*** take effect when displaying the revision diff, we still save the full code to the db as usual.
+    note that this ***ONLY*** effects the displaying of the revision diff, we never touch the data that gets saved to the db.

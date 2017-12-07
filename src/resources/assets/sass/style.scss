@@ -1,5 +1,5 @@
-@import "./vendor/animate";
-@import "./vendor/bulma-timeline";
+@import './vendor/animate';
+@import './vendor/bulma-timeline';
 
 // overlay
 .shade {
@@ -62,7 +62,7 @@
             position: absolute;
             top: 15px;
             left: -38px;
-            content: "";
+            content: '';
         }
 
         &::before {
@@ -84,7 +84,7 @@
                 position: absolute;
                 top: 2px;
                 left: -14px;
-                content: "•";
+                content: '•';
             }
         }
 
@@ -124,6 +124,7 @@
         td {
             width: 50%;
             padding: 1rem !important;
+            vertical-align: top;
         }
 
         ins,

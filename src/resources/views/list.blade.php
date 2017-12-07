@@ -17,7 +17,7 @@
     </div>
 
     {{-- Odin --}}
-    <odin-comp inline-template
+    <odin inline-template
         :odin-trans="{{ json_encode(['ajax_fail'=>trans('Odin::messages.ajax_fail')]) }}"
         :rev-list="{{ json_encode($revisions->pluck('id')) }}">
 
@@ -26,7 +26,7 @@
             <div class="odin-animated fadeIn" :class="{'shade' : selected}" @click="toggleRev()"></div>
 
             <div class="columns">
-                <div class="column is-10 revisions" ref="revisions">
+                <div class="column is-9 revisions" ref="revisions">
                     {{-- list --}}
                     <table class="table is-hoverable is-narrow">
                         <tbody>
@@ -76,7 +76,7 @@
                                     $html = app('odin')->toHtml($rev);
                                     $class = $rev->event == 'created' ? 'is-link is-outlined' : 'is-warning';
 
-                                    $previewCheck = isset($template) && !in_array($rev->event, ['deleted', 'created']);
+                                    $previewCheck = isset($template) && !in_array($rev->event, ['created', 'deleted', 'restored']);
                                 @endphp
 
                                 {{-- date --}}
@@ -145,10 +145,12 @@
                                                                         {{ Form::close() }}
 
                                                                     @else
-                                                                        {{-- restore normal --}}
-                                                                        {{ Form::open(['route' => ['odin.restore', $id]]) }}
-                                                                            <button class="button {{ $class }}">{{ trans('Odin::messages.res') }}</button>
-                                                                        {{ Form::close() }}
+                                                                        @if ($rev->event !== 'restored')
+                                                                            {{-- restore normal --}}
+                                                                            {{ Form::open(['route' => ['odin.restore', $id]]) }}
+                                                                                <button class="button {{ $class }}">{{ trans('Odin::messages.res') }}</button>
+                                                                            {{ Form::close() }}
+                                                                        @endif
 
                                                                     @endif
                                                                 </div>
@@ -192,10 +194,11 @@
                             @endforeach
                         </ul>
                     </div>
+
                 </div>
             </div>
         </div>
-    </odin-comp>
+    </odin>
 </section>
 
 {{-- Footer --}}
