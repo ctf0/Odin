@@ -1,6 +1,6 @@
 # Odin
 
-[![Latest Stable Version](https://poser.pugx.org/ctf0/odin/v/stable)](https://packagist.org/packages/ctf0/odin) [![Total Downloads](https://poser.pugx.org/ctf0/odin/downloads)](https://packagist.org/packages/ctf0/odin)
+[![Latest Stable Version](https://img.shields.io/packagist/v/ctf0/odin.svg?style=for-the-badge)](https://packagist.org/packages/ctf0/odin) [![Total Downloads](https://img.shields.io/packagist/dt/ctf0/odin.svg?style=for-the-badge)](https://packagist.org/packages/ctf0/odin)
 
 Manage model revisions with ease.
 
