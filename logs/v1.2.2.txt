@@ -1,4 +1,0 @@
-- fix cmnd error
-- show cmnd msg only when needed
-- protect against un allowed ops on backend as well
-- better ux
