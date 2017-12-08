@@ -7,9 +7,10 @@
     <div class="notif-container">
         @if (session('status'))
             <my-notification
-                title="Success"
+                title="{{ session('title') ?: 'Success' }}"
                 body="{{ session('status') }}"
-                type="success">
+                type="{{ session('type') ?: 'success' }}"
+                duration="3">
             </my-notification>
         @endif
 
@@ -76,7 +77,7 @@
                                     $html = app('odin')->toHtml($rev);
                                     $class = $rev->event == 'created' ? 'is-link is-outlined' : 'is-warning';
 
-                                    $previewCheck = isset($template) && !in_array($rev->event, ['created', 'deleted', 'restored']);
+                                    $previewCheck = isset($template) && !in_array($rev->event, ['created', 'restored']);
                                 @endphp
 
                                 {{-- date --}}
@@ -139,10 +140,12 @@
                                                             <div class="level-right">
                                                                 <div class="level-item">
                                                                     @if ($rev->event == 'deleted')
-                                                                        {{-- restore softDelete --}}
-                                                                        {{ Form::open(['route' => ['odin.restore.soft', $id], 'method' => 'PUT']) }}
-                                                                            <button class="button is-success">{{ trans('Odin::messages.res_model') }}</button>
-                                                                        {{ Form::close() }}
+                                                                        @if ($loop->first)
+                                                                            {{-- restore softDelete --}}
+                                                                            {{ Form::open(['route' => ['odin.restore.soft', $id], 'method' => 'PUT']) }}
+                                                                                <button class="button is-success">{{ trans('Odin::messages.res_model') }}</button>
+                                                                            {{ Form::close() }}
+                                                                        @endif
 
                                                                     @else
                                                                         @if ($rev->event !== 'restored')

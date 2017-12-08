@@ -17,8 +17,17 @@ class OdinController extends Controller
     public function preview($id)
     {
         $revision = $this->getId($id);
-        $model    = app($revision->auditable_type);
-        $data     = in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($model))
+
+        if (in_array($revision->event, ['created', 'restored'])) {
+            return back()->with([
+                'title'  => 'Error',
+                'status' => trans('Odin::messages.cant_preview'),
+                'type'   => 'danger',
+            ]);
+        }
+
+        $model = app($revision->auditable_type);
+        $data  = in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($model))
             ? $model->withTrashed()->find($revision->auditable_id)->transitionTo($revision, true)
             : $model->find($revision->auditable_id)->transitionTo($revision, true);
 
@@ -36,6 +45,14 @@ class OdinController extends Controller
     {
         $revision = $this->getId($id);
 
+        if (in_array($revision->event, ['deleted', 'restored'])) {
+            return back()->with([
+                'title'  => 'Error',
+                'status' => trans('Odin::messages.cant_restore'),
+                'type'   => 'danger',
+            ]);
+        }
+
         if ('created' == $revision->event) {
             // use new
             $model = app($revision->auditable_type)->find($revision->auditable_id)->transitionTo($revision);
@@ -46,7 +63,11 @@ class OdinController extends Controller
 
         $model->save()
             ? session()->flash('status', trans('Odin::messages.res_success'))
-            : session()->flash('status', trans('Odin::messages.went_bad'));
+            : session()->flash([
+                'title'  => 'Error',
+                'status' => trans('Odin::messages.went_bad'),
+                'type'   => 'danger',
+            ]);
 
         return back();
     }
@@ -61,11 +82,24 @@ class OdinController extends Controller
     public function restoreSoft($id)
     {
         $revision = $this->getId($id);
-        $model    = app($revision->auditable_type)->withTrashed()->find($revision->auditable_id);
+
+        if (!in_array($revision->event, ['deleted'])) {
+            return back()->with([
+                'title'  => 'Error',
+                'status' => trans('Odin::messages.cant_soft_restore'),
+                'type'   => 'danger',
+            ]);
+        }
+
+        $model = app($revision->auditable_type)->withTrashed()->find($revision->auditable_id);
 
         $model->restore()
             ? session()->flash('status', trans('Odin::messages.res_model_success'))
-            : session()->flash('status', trans('Odin::messages.went_bad'));
+            : session()->flash([
+                'title'  => 'Error',
+                'status' => trans('Odin::messages.went_bad'),
+                'type'   => 'danger',
+            ]);
 
         return back();
     }

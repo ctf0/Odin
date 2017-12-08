@@ -33,15 +33,15 @@ class GarbageCollector extends Command
             $model_ids = app($m)->withoutGlobalScopes()->pluck('id')->all();
             $diff      = array_diff($audit_ids, $model_ids);
 
-            if (count($diff)) {
+            if (count($diff) > 0) {
                 foreach ($diff as $id) {
-                    $this->audit->where('auditable_id', $id)->delete();
+                    $audit->where('auditable_id', $id)->delete();
                 }
 
                 $this->line("'$m' audits are cleared");
             }
         }
 
-        $this->info('All Done');
+        $this->info('Nothing To Clear');
     }
 }

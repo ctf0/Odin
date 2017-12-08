@@ -5,7 +5,7 @@
 Manage model revisions with ease.
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/7388088/33772810-8c13e864-dc3e-11e7-9bf3-bbc969ea386d.jpg">
+    <img src="https://user-images.githubusercontent.com/7388088/33775349-be6f1696-dc46-11e7-880f-693a47d86b52.jpg">
 </p>
 
 <br>
