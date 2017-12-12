@@ -7,7 +7,7 @@ window.keycode = require('keycode')
 require('vue-multi-ref')
 
 // polyfill
-// window.__forceSmoothScrollPolyfill__ = true
+window.__forceSmoothScrollPolyfill__ = true
 require('smoothscroll-polyfill').polyfill()
 
 // axios
