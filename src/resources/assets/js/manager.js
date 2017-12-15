@@ -6,10 +6,6 @@ window.keycode = require('keycode')
 // directive
 require('vue-multi-ref')
 
-// polyfill
-window.__forceSmoothScrollPolyfill__ = true
-require('smoothscroll-polyfill').polyfill()
-
 // axios
 window.axios = require('axios')
 axios.defaults.headers.common = {
