@@ -92,7 +92,7 @@
                                 <li class="timeline-item" v-multi-ref="'rev-{{ $id }}'">
                                     <div class="timeline-marker is-icon" :class="{'is-link' : selected == '{{ $id }}'}">
                                         <template v-if="selected == '{{ $id }}'">
-                                            <i class="fa fa-flag"></i>
+                                            <icon name="flag" scale="0.75"></icon>
                                         </template>
                                     </div>
 
@@ -202,8 +202,8 @@
             </div>
         </div>
     </odin>
+
 </section>
 
 {{-- Footer --}}
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="{{ asset('path/to/app.js') }}"></script>

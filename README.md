@@ -41,9 +41,9 @@ Manage model revisions with ease.
 - install dependencies
 
 ```bash
-yarn add vue axios vue-notif vue-multi-ref keycode
+yarn add vue vue-awesome vue-notif vue-multi-ref axios keycode
 # or
-npm install vue axios vue-notif vue-multi-ref keycode --save
+npm install vue vue-awesome vue-notif vue-multi-ref axios keycode --save
 ```
 
 - add this one liner to your main js file and run `npm run watch` to compile your `js/css` files.

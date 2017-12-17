@@ -13,6 +13,10 @@ axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest'
 }
 
+// vue-awesome
+import 'vue-awesome/icons/flag'
+Vue.component('icon', require('vue-awesome/components/Icon'))
+
 /*                Components                */
 Vue.component('Odin', require('./Odin.vue'))
 Vue.component('MyNotification', require('vue-notif'))
