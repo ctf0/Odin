@@ -86,7 +86,7 @@ new Vue({
     | go to last revision  | end        | * *(revision date)* |
     | hide revision window | esc        | * *(x)*             |
 
-- events "JS"
+- events "[JS](https://github.com/gocanto/vuemit)"
 
     | event-name |       description       |
     |------------|-------------------------|
