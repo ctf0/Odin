@@ -72,7 +72,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
             foreach ($blocks as $change) {
                 $html .= '<tbody class="Change' . ucfirst($change['tag']) . '">';
                 // Equal changes should be shown on both sides of the diff
-                if ('equal' == $change['tag']) {
+                if ($change['tag'] == 'equal') {
                     foreach ($change['base']['lines'] as $no => $line) {
                         $fromLine = $change['base']['offset'] + $no + 1;
                         $toLine   = $change['changed']['offset'] + $no + 1;
@@ -83,7 +83,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
                     }
                 }
                 // Added lines only on the right side
-                elseif ('insert' == $change['tag']) {
+                elseif ($change['tag'] == 'insert') {
                     foreach ($change['changed']['lines'] as $no => $line) {
                         $toLine = $change['changed']['offset'] + $no + 1;
                         $html .= '<tr>';
@@ -93,7 +93,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
                     }
                 }
                 // Show deleted lines only on the left side
-                elseif ('delete' == $change['tag']) {
+                elseif ($change['tag'] == 'delete') {
                     foreach ($change['base']['lines'] as $no => $line) {
                         $fromLine = $change['base']['offset'] + $no + 1;
                         $html .= '<tr>';
@@ -103,7 +103,7 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
                     }
                 }
                 // Show modified lines on both sides
-                elseif ('replace' == $change['tag']) {
+                elseif ($change['tag'] == 'replace') {
                     if (count($change['base']['lines']) >= count($change['changed']['lines'])) {
                         foreach ($change['base']['lines'] as $no => $line) {
                             $fromLine = $change['base']['offset'] + $no + 1;

@@ -25,9 +25,6 @@
         "owen-it/laravel-auditing": "^5.0",
         "ctf0/package-changelog": "^1.0"
     },
-    "suggest": {
-        "laravelcollective/html": "HTML and Form Builders for the Laravel Framework"
-    },
     "autoload": {
         "psr-4": {
             "ctf0\\Odin\\": "src"

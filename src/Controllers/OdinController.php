@@ -27,7 +27,7 @@ class OdinController extends Controller
         }
 
         $model = app($revision->auditable_type);
-        $data  = in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($model))
+        $data  = method_exists($model, 'isForceDeleting')
             ? $model->withTrashed()->find($revision->auditable_id)->transitionTo($revision, true)
             : $model->find($revision->auditable_id)->transitionTo($revision, true);
 
@@ -53,7 +53,7 @@ class OdinController extends Controller
             ]);
         }
 
-        if ('created' == $revision->event) {
+        if ($revision->event == 'created') {
             // use new
             $model = app($revision->auditable_type)->find($revision->auditable_id)->transitionTo($revision);
         } else {

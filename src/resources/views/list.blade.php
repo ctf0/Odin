@@ -19,7 +19,7 @@
 
     {{-- Odin --}}
     <odin inline-template
-        :odin-trans="{{ json_encode(['ajax_fail'=>trans('Odin::messages.ajax_fail')]) }}"
+        :odin-trans="{{ json_encode(['ajax_fail' => trans('Odin::messages.ajax_fail')]) }}"
         :rev-list="{{ json_encode($revisions->pluck('id')) }}">
 
         <div>
@@ -35,10 +35,11 @@
                                 @php
                                     $id = $rev->id;
                                     $user = $rev->user;
-                                    $time = Carbon\Carbon::parse($rev->created_at);
                                 @endphp
 
-                                <tr class="revisions-link" v-multi-ref="'rev-{{ $id }}'" @click="toggleRev({{ $id }})">
+                                <tr class="revisions-link"
+                                    v-multi-ref="'rev-{{ $id }}'"
+                                    @click="toggleRev({{ $id }})">
 
                                     {{-- user avatar --}}
                                     @if (isset($user->avatar))
@@ -54,14 +55,20 @@
                                         <td>{{ $user->name }}</td>
                                     @endif
 
-                                    <td>{{ $time->diffForHumans() }} <strong>"{{ $time->format('F j, Y @ h:i:s A') }}"</strong></td>
+                                    <td>
+                                        {{ $rev->created_at->diffForHumans() }}
+                                        <strong>"{{ $rev->created_at->format('F j, Y @ h:i A') }}"</strong>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
 
                     {{-- diff --}}
-                    <div class="compare-page odin-animated fadeInUp" v-show="selected" ref="container">
+                    <div class="compare-page odin-animated fadeInUp"
+                        v-show="selected"
+                        ref="container">
+
                         {{-- close --}}
                         <div class="is-pulled-right">
                             <button class="delete" @click="toggleRev()"></button>
@@ -72,11 +79,9 @@
                             @foreach ($revisions as $rev)
                                 @php
                                     $id = $rev->id;
-                                    $user = $rev->user;
-                                    $time = Carbon\Carbon::parse($rev->created_at);
                                     $html = app('odin')->toHtml($rev);
-                                    $class = $rev->event == 'created' ? 'is-link is-outlined' : 'is-warning';
 
+                                    $class = $rev->event == 'created' ? 'is-link is-outlined' : 'is-success';
                                     $previewCheck = isset($template) && !in_array($rev->event, ['created', 'restored']);
                                 @endphp
 
@@ -84,13 +89,14 @@
                                 <li id="{{ $id }}" class="timeline-header" v-multi-ref="'rev-{{ $id }}'">
                                     <button class="tag is-rounded is-medium is-black revisions-link"
                                         @click.stop="updateRev({{ $id }}), goTo('{{ $id }}')">
-                                        {{ $time->diffForHumans() }}
+                                        {{ $rev->created_at->diffForHumans() }}
                                     </button>
                                 </li>
 
                                 {{-- data --}}
                                 <li class="timeline-item" v-multi-ref="'rev-{{ $id }}'">
-                                    <div class="timeline-marker is-icon" :class="{'is-link' : selected == '{{ $id }}'}">
+                                    <div class="timeline-marker is-icon"
+                                        :class="{'is-link' : selected == '{{ $id }}'}">
                                         <template v-if="selected == '{{ $id }}'">
                                             <icon name="flag" scale="0.75"></icon>
                                         </template>
@@ -99,8 +105,15 @@
                                     <div class="timeline-content">
                                         <div class="heading">
                                             <p><span class="title">{{ $rev->event }}</span></p>
-                                            <p><span class="subtitle is-6">{{ $time->format('F j, Y @ h:i:s A') }}</span></p>
-                                            <p><small class="subtitle is-6">By</small> <span class="subtitle is-5">{{ $user->name }}</span></p>
+                                            <p>
+                                                <span class="subtitle is-6">
+                                                    {{ $rev->created_at->format('F j, Y @ h:i A') }}
+                                                </span>
+                                            </p>
+                                            <p>
+                                                <small class="subtitle is-6">By</small>
+                                                <span class="subtitle is-5">{{ $rev->user->name }}</span>
+                                            </p>
                                         </div>
 
                                         <div>
@@ -129,10 +142,15 @@
                                                             <div class="level-left">
                                                                 @if ($previewCheck)
                                                                     <div class="level-item">
-                                                                        {{ Form::open(['route' => ['odin.preview', $id], 'target'=>'_blank']) }}
+                                                                        <form action="{{ route('odin.preview', $id) }}"
+                                                                            method="POST"
+                                                                            target="_blank">
+                                                                            {{ csrf_field() }}
                                                                             <input type="hidden" name="template" value="{{ $template }}">
-                                                                            <button class="button is-link is-outlined">{{ trans('Odin::messages.preview') }}</button>
-                                                                        {{ Form::close() }}
+                                                                            <button class="button is-link is-outlined">
+                                                                                {{ trans('Odin::messages.preview') }}
+                                                                            </button>
+                                                                        </form>
                                                                     </div>
                                                                 @endif
                                                             </div>
@@ -142,17 +160,26 @@
                                                                     @if ($rev->event == 'deleted')
                                                                         @if ($loop->first)
                                                                             {{-- restore softDelete --}}
-                                                                            {{ Form::open(['route' => ['odin.restore.soft', $id], 'method' => 'PUT']) }}
-                                                                                <button class="button is-success">{{ trans('Odin::messages.res_model') }}</button>
-                                                                            {{ Form::close() }}
+                                                                            <form action="{{ route('odin.restore.soft', $id) }}"
+                                                                                method="POST">
+                                                                                {{ method_field('PUT') }}
+                                                                                {{ csrf_field() }}
+                                                                                <button class="button is-success">
+                                                                                    {{ trans('Odin::messages.res_model') }}
+                                                                                </button>
+                                                                            </form>
                                                                         @endif
 
                                                                     @else
                                                                         @if ($rev->event !== 'restored')
                                                                             {{-- restore normal --}}
-                                                                            {{ Form::open(['route' => ['odin.restore', $id]]) }}
-                                                                                <button class="button {{ $class }}">{{ trans('Odin::messages.res') }}</button>
-                                                                            {{ Form::close() }}
+                                                                            <form action="{{ route('odin.restore', $id) }}"
+                                                                                method="POST">
+                                                                                {{ csrf_field() }}
+                                                                                <button class="button {{ $class }}">
+                                                                                    {{ trans('Odin::messages.res') }}
+                                                                                </button>
+                                                                            </form>
                                                                         @endif
 
                                                                     @endif
@@ -160,14 +187,16 @@
 
                                                                 {{-- remove revision --}}
                                                                 <div class="level-item">
-                                                                    {{ Form::open([
-                                                                        'route' => ['odin.remove', $id],
-                                                                        'method' => 'DELETE',
-                                                                        'data-id' => $id,
-                                                                        '@submit.prevent' => 'removeRev($event)'
-                                                                    ]) }}
-                                                                        <button class="button is-danger">{{ trans('Odin::messages.del') }}</button>
-                                                                    {{ Form::close() }}
+                                                                    <form action="{{ route('odin.remove', $id) }}"
+                                                                        method="POST"
+                                                                        data-id="{{ $id }}"
+                                                                        @submit.prevent="removeRev($event)">
+                                                                        {{ method_field('DELETE') }}
+                                                                        {{ csrf_field() }}
+                                                                        <button class="button is-danger">
+                                                                            {{ trans('Odin::messages.del') }}
+                                                                        </button>
+                                                                    </form>
                                                                 </div>
                                                             </div>
 
@@ -176,14 +205,16 @@
                                                             <div class="level-right">
                                                                 {{-- remove revision --}}
                                                                 <div class="level-item">
-                                                                    {{ Form::open([
-                                                                        'route' => ['odin.remove', $id],
-                                                                        'method' => 'DELETE',
-                                                                        'data-id' => $id,
-                                                                        '@submit.prevent' => 'removeRev($event)'
-                                                                    ]) }}
-                                                                        <button class="button is-danger">{{ trans('Odin::messages.del') }}</button>
-                                                                    {{ Form::close() }}
+                                                                    <form action="{{ route('odin.remove', $id) }}"
+                                                                        method="POST"
+                                                                        data-id="{{ $id }}"
+                                                                        @submit.prevent="removeRev($event)">
+                                                                        {{ csrf_field() }}
+                                                                        {{ method_field('DELETE') }}
+                                                                        <button class="button is-danger">
+                                                                            {{ trans('Odin::messages.del') }}
+                                                                        </button>
+                                                                    </form>
                                                                 </div>
                                                             </div>
 

@@ -3,7 +3,6 @@
 namespace ctf0\Odin\Traits;
 
 use OwenIt\Auditing\Auditable;
-use OwenIt\Auditing\Models\Audit;
 
 trait Revisions
 {
@@ -21,6 +20,6 @@ trait Revisions
     // Accessor for Revisions
     public function getRevisionsAttribute()
     {
-        return $this->audits()->with('user')->get()->reverse();
+        return $this->audits()->get()->reverse();
     }
 }

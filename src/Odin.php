@@ -32,7 +32,7 @@ class Odin
             $data['old'] = json_decode(array_get($rev->old_values, $col), true) ?: array_get($rev->old_values, $col);
 
             // put old first
-            if ('new' == array_keys($data)[0]) {
+            if (array_keys($data)[0] == 'new') {
                 $data = array_reverse($data);
             }
 
@@ -88,7 +88,7 @@ class Odin
                 }
 
                 // put old first
-                if ('new' == array_keys($data)[0]) {
+                if (array_keys($data)[0] == 'new') {
                     $data = array_reverse($data);
                 }
 

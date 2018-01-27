@@ -1,5 +1,5 @@
 @import './packages/animate';
-@import './packages/bulma-timeline';
+@import './packages/bulma-timeline.css';
 
 // overlay
 .shade {
@@ -38,6 +38,10 @@
     height: 100%;
     padding: 2rem;
     background-color: white;
+
+    .timeline-content {
+        min-width: 100%;
+    }
 }
 
 @media screen and (max-width: 1023px) {
@@ -181,4 +185,12 @@
     margin-top: 3rem;
     padding-top: 1.5rem;
     border-top: 1px solid #dbdbdb;
+}
+
+.is-icon {
+    color: white;
+}
+
+.timeline .timeline-header {
+    justify-content: start;
 }
