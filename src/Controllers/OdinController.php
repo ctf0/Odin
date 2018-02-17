@@ -28,8 +28,8 @@ class OdinController extends Controller
 
         $model = app($revision->auditable_type);
         $data  = method_exists($model, 'isForceDeleting')
-            ? $model->withTrashed()->find($revision->auditable_id)->transitionTo($revision, true)
-            : $model->find($revision->auditable_id)->transitionTo($revision, true);
+            ? $model->withTrashed()->findOrFail($revision->auditable_id)->transitionTo($revision, true)
+            : $model->findOrFail($revision->auditable_id)->transitionTo($revision, true);
 
         return view(request('template'), compact('data'));
     }
@@ -55,10 +55,10 @@ class OdinController extends Controller
 
         if ($revision->event == 'created') {
             // use new
-            $model = app($revision->auditable_type)->find($revision->auditable_id)->transitionTo($revision);
+            $model = app($revision->auditable_type)->findOrFail($revision->auditable_id)->transitionTo($revision);
         } else {
             // use old
-            $model = app($revision->auditable_type)->find($revision->auditable_id)->transitionTo($revision, true);
+            $model = app($revision->auditable_type)->findOrFail($revision->auditable_id)->transitionTo($revision, true);
         }
 
         $model->save()
@@ -91,7 +91,7 @@ class OdinController extends Controller
             ]);
         }
 
-        $model = app($revision->auditable_type)->withTrashed()->find($revision->auditable_id);
+        $model = app($revision->auditable_type)->withTrashed()->findOrFail($revision->auditable_id);
 
         $model->restore()
             ? session()->flash('status', trans('Odin::messages.res_model_success'))
@@ -135,6 +135,6 @@ class OdinController extends Controller
      */
     protected function getId($id)
     {
-        return Audit::find($id);
+        return Audit::findOrFail($id);
     }
 }

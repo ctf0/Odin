@@ -1,6 +1,7 @@
 # Odin
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/ctf0/odin.svg?style=for-the-badge)](https://packagist.org/packages/ctf0/odin) [![Total Downloads](https://img.shields.io/packagist/dt/ctf0/odin.svg?style=for-the-badge)](https://packagist.org/packages/ctf0/odin)
+[![Latest Stable Version](https://img.shields.io/packagist/v/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin) [![Total Downloads](https://img.shields.io/packagist/dt/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin)
+[![Donate with Bitcoin](https://en.cryptobadges.io/badge/micro/16ri7Hh848bw7vxbEevKHFuHXLmsV8Vc9L)](https://en.cryptobadges.io/donate/16ri7Hh848bw7vxbEevKHFuHXLmsV8Vc9L)
 
 Manage model revisions with ease.
 
@@ -50,7 +51,7 @@ npm install vue vue-awesome vue-notif vue-multi-ref axios keycode --save
     + if you are having issues [Check](https://ctf0.wordpress.com/2017/09/12/laravel-mix-es6/).
 
 ```js
-require('./../vendor/Odin/js/manager')
+require('../vendor/Odin/js/manager')
 
 new Vue({
     el: '#app'

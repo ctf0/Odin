@@ -1,11 +1,11 @@
 <script>
 export default {
-    name: 'odin-comp',
-    props: ['odinTrans', 'revList'],
+    name: 'odin',
+    props: ['translations', 'revList'],
     data() {
         return {
             selected: null,
-            list : this.revList
+            list: this.revList
         }
     },
     methods: {
@@ -118,7 +118,7 @@ export default {
             })
         },
         trans(key) {
-            return this.odinTrans[key]
+            return this.translations[key]
         },
         showNotif(msg, s = 'success') {
 
@@ -126,13 +126,13 @@ export default {
             let duration = 2
 
             switch (s) {
-            case 'black':
-            case 'danger':
-                title = 'Error'
-                duration = null
-                break
-            default:
-                title = 'Success'
+                case 'black':
+                case 'danger':
+                    title = 'Error'
+                    duration = null
+                    break
+                default:
+                    title = 'Success'
             }
 
             EventHub.fire('showNotif', {
@@ -143,6 +143,6 @@ export default {
             })
         }
     },
-    render () {}
+    render() {}
 }
 </script>

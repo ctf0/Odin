@@ -19,7 +19,7 @@
 
     {{-- Odin --}}
     <odin inline-template
-        :odin-trans="{{ json_encode(['ajax_fail' => trans('Odin::messages.ajax_fail')]) }}"
+        :translations="{{ json_encode(['ajax_fail' => trans('Odin::messages.ajax_fail')]) }}"
         :rev-list="{{ json_encode($revisions->pluck('id')) }}">
 
         <div>
@@ -27,7 +27,7 @@
             <div class="odin-animated fadeIn" :class="{'shade' : selected}" @click="toggleRev()"></div>
 
             <div class="columns">
-                <div class="column is-9 revisions" ref="revisions">
+                <div class="column revisions" ref="revisions">
                     {{-- list --}}
                     <table class="table is-hoverable is-narrow">
                         <tbody>

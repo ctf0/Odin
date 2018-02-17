@@ -10,7 +10,7 @@ trait Revisions
 
     public function getAuditExclude(): array
     {
-        $main  = $this->auditExclude ?? [];
+        $main  = $this->auditExclude ?: [];
         $extra = [config('audit.user.foreign_key'), 'id'];
         $dates = ['created_at', 'updated_at', 'deleted_at'];
 
