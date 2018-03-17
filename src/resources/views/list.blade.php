@@ -7,9 +7,9 @@
     <div class="notif-container">
         @if (session('status'))
             <my-notification
-                title="{{ session('title') ?: 'Success' }}"
+                title="{{ session('title') ?? 'Success' }}"
                 body="{{ session('status') }}"
-                type="{{ session('type') ?: 'success' }}"
+                type="{{ session('type') ?? 'success' }}"
                 duration="3">
             </my-notification>
         @endif
@@ -32,28 +32,19 @@
                     <table class="table is-hoverable is-narrow">
                         <tbody>
                             @foreach ($revisions as $rev)
-                                @php
-                                    $id = $rev->id;
-                                    $user = $rev->user;
-                                @endphp
-
                                 <tr class="revisions-link"
-                                    v-multi-ref="'rev-{{ $id }}'"
-                                    @click="toggleRev({{ $id }})">
+                                    v-multi-ref="'rev-{{ $rev->id }}'"
+                                    @click="toggleRev({{ $rev->id }})">
 
                                     {{-- user avatar --}}
-                                    @if (isset($user->avatar))
-                                        <td class="has-text-center">
-                                            <figure class="image is-24x24">
-                                                    <img src="{{ $user->avatar }}">
-                                            </figure>
-                                        </td>
-                                    @endif
+                                    <td class="has-text-center">
+                                        <figure class="image is-24x24">
+                                                <img src="{{ $rev->user->avatar ?? '' }}">
+                                        </figure>
+                                    </td>
 
                                     {{-- user name --}}
-                                    @if (isset($user->name))
-                                        <td>{{ $user->name }}</td>
-                                    @endif
+                                    <td>{{ $rev->user->name ?? '' }}</td>
 
                                     <td>
                                         {{ $rev->created_at->diffForHumans() }}
@@ -78,26 +69,24 @@
                         <ul class="timeline">
                             @foreach ($revisions as $rev)
                                 @php
-                                    $id = $rev->id;
                                     $html = app('odin')->toHtml($rev);
-
                                     $class = $rev->event == 'created' ? 'is-link is-outlined' : 'is-success';
                                     $previewCheck = isset($template) && !in_array($rev->event, ['created', 'restored']);
                                 @endphp
 
                                 {{-- date --}}
-                                <li id="{{ $id }}" class="timeline-header" v-multi-ref="'rev-{{ $id }}'">
+                                <li id="{{ $rev->id }}" class="timeline-header" v-multi-ref="'rev-{{ $rev->id }}'">
                                     <button class="tag is-rounded is-medium is-black revisions-link"
-                                        @click.stop="updateRev({{ $id }}), goTo('{{ $id }}')">
+                                        @click.stop="updateRev({{ $rev->id }}), goTo('{{ $rev->id }}')">
                                         {{ $rev->created_at->diffForHumans() }}
                                     </button>
                                 </li>
 
                                 {{-- data --}}
-                                <li class="timeline-item" v-multi-ref="'rev-{{ $id }}'">
+                                <li class="timeline-item" v-multi-ref="'rev-{{ $rev->id }}'">
                                     <div class="timeline-marker is-icon"
-                                        :class="{'is-link' : selected == '{{ $id }}'}">
-                                        <template v-if="selected == '{{ $id }}'">
+                                        :class="{'is-link' : selected == '{{ $rev->id }}'}">
+                                        <template v-if="selected == '{{ $rev->id }}'">
                                             <icon name="flag" scale="0.75"></icon>
                                         </template>
                                     </div>
@@ -112,7 +101,7 @@
                                             </p>
                                             <p>
                                                 <small class="subtitle is-6">By</small>
-                                                <span class="subtitle is-5">{{ $rev->user->name }}</span>
+                                                <span class="subtitle is-5">{{ $rev->user->name ?? '' }}</span>
                                             </p>
                                         </div>
 
@@ -142,7 +131,7 @@
                                                             <div class="level-left">
                                                                 @if ($previewCheck)
                                                                     <div class="level-item">
-                                                                        <form action="{{ route('odin.preview', $id) }}"
+                                                                        <form action="{{ route('odin.preview', $rev->id) }}"
                                                                             method="POST"
                                                                             target="_blank">
                                                                             {{ csrf_field() }}
@@ -160,7 +149,7 @@
                                                                     @if ($rev->event == 'deleted')
                                                                         @if ($loop->first)
                                                                             {{-- restore softDelete --}}
-                                                                            <form action="{{ route('odin.restore.soft', $id) }}"
+                                                                            <form action="{{ route('odin.restore.soft', $rev->id) }}"
                                                                                 method="POST">
                                                                                 {{ method_field('PUT') }}
                                                                                 {{ csrf_field() }}
@@ -173,7 +162,7 @@
                                                                     @else
                                                                         @if ($rev->event !== 'restored')
                                                                             {{-- restore normal --}}
-                                                                            <form action="{{ route('odin.restore', $id) }}"
+                                                                            <form action="{{ route('odin.restore', $rev->id) }}"
                                                                                 method="POST">
                                                                                 {{ csrf_field() }}
                                                                                 <button class="button {{ $class }}">
@@ -187,9 +176,9 @@
 
                                                                 {{-- remove revision --}}
                                                                 <div class="level-item">
-                                                                    <form action="{{ route('odin.remove', $id) }}"
+                                                                    <form action="{{ route('odin.remove', $rev->id) }}"
                                                                         method="POST"
-                                                                        data-id="{{ $id }}"
+                                                                        data-id="{{ $rev->id }}"
                                                                         @submit.prevent="removeRev($event)">
                                                                         {{ method_field('DELETE') }}
                                                                         {{ csrf_field() }}
@@ -205,9 +194,9 @@
                                                             <div class="level-right">
                                                                 {{-- remove revision --}}
                                                                 <div class="level-item">
-                                                                    <form action="{{ route('odin.remove', $id) }}"
+                                                                    <form action="{{ route('odin.remove', $rev->id) }}"
                                                                         method="POST"
-                                                                        data-id="{{ $id }}"
+                                                                        data-id="{{ $rev->id }}"
                                                                         @submit.prevent="removeRev($event)">
                                                                         {{ csrf_field() }}
                                                                         {{ method_field('DELETE') }}

@@ -20,6 +20,6 @@ trait Revisions
     // Accessor for Revisions
     public function getRevisionsAttribute()
     {
-        return $this->audits()->get()->reverse();
+        return $this->audits->reverse();
     }
 }

@@ -11,44 +11,46 @@ export default {
     methods: {
         // navigate
         navigation(e) {
+            let key = keycode(e)
+
             let cur = this.selected
             let arr = this.list
             let index = arr.indexOf(cur)
             let newId = null
 
             // hide
-            if (keycode(e) == 'esc' && cur) {
+            if (key == 'esc' && cur) {
                 this.toggleRev()
             }
 
             if (arr.length > 1) {
                 // first
-                if (keycode(e) == 'home') {
+                if (key == 'home') {
                     newId = arr[0]
                 }
 
                 // last
-                if (keycode(e) == 'end') {
+                if (key == 'end') {
                     newId = arr[arr.length - 1]
                 }
 
                 // next
-                if (keycode(e) == 'right' || keycode(e) == 'down') {
+                if (key == 'right' || key == 'down') {
                     newId = arr[index + 1]
                 }
 
                 // prev
-                if (keycode(e) == 'left' || keycode(e) == 'up') {
+                if (key == 'left' || key == 'up') {
                     newId = arr[index - 1]
                 }
 
                 if (
-                    keycode(e) == 'home' ||
-                    keycode(e) == 'end' ||
-                    keycode(e) == 'left' ||
-                    keycode(e) == 'right' ||
-                    keycode(e) == 'down' ||
-                    keycode(e) == 'up'
+                    key == 'home' ||
+                    key == 'end' ||
+                    key == 'left' ||
+                    key == 'right' ||
+                    key == 'down' ||
+                    key == 'up'
                 ) {
                     if (!newId) {
                         return
