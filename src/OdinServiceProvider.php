@@ -8,6 +8,8 @@ use ctf0\Odin\Commands\GarbageCollector;
 
 class OdinServiceProvider extends ServiceProvider
 {
+    protected $file;
+
     /**
      * Perform post-registration booting of services.
      */
