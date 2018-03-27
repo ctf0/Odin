@@ -9,11 +9,11 @@ Manage model revisions with ease.
     <img src="https://user-images.githubusercontent.com/7388088/33775349-be6f1696-dc46-11e7-880f-693a47d86b52.jpg">
 </p>
 
+- package requires Laravel v5.4+
+
 <br>
 
 ## Installation
-
-- package requires Laravel v5.4+
 
 - `composer require ctf0/odin`
 

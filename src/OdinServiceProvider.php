@@ -21,8 +21,6 @@ class OdinServiceProvider extends ServiceProvider
         $this->auditEvent();
         $this->command();
 
-        $this->app['odin'];
-
         // append extra data
         if (!app('cache')->store('file')->has('ct-odin')) {
             $this->autoReg();

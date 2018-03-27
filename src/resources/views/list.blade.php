@@ -46,6 +46,7 @@
                                     {{-- user name --}}
                                     <td>{{ $rev->user->name ?? '' }}</td>
 
+                                    {{-- date --}}
                                     <td>
                                         {{ $rev->created_at->diffForHumans() }}
                                         <strong>"{{ $rev->created_at->format('F j, Y @ h:i A') }}"</strong>
@@ -93,12 +94,15 @@
 
                                     <div class="timeline-content">
                                         <div class="heading">
+                                            {{-- event name --}}
                                             <p><span class="title">{{ $rev->event }}</span></p>
+                                            {{-- event date --}}
                                             <p>
                                                 <span class="subtitle is-6">
                                                     {{ $rev->created_at->format('F j, Y @ h:i A') }}
                                                 </span>
                                             </p>
+                                            {{-- event user --}}
                                             <p>
                                                 <small class="subtitle is-6">By</small>
                                                 <span class="subtitle is-5">{{ $rev->user->name ?? '' }}</span>
