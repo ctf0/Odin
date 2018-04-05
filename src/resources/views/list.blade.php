@@ -151,17 +151,15 @@
                                                             <div class="level-right">
                                                                 <div class="level-item">
                                                                     @if ($rev->event == 'deleted')
-                                                                        @if ($loop->first)
-                                                                            {{-- restore softDelete --}}
-                                                                            <form action="{{ route('odin.restore.soft', $rev->id) }}"
-                                                                                method="POST">
-                                                                                {{ method_field('PUT') }}
-                                                                                {{ csrf_field() }}
-                                                                                <button class="button is-success">
-                                                                                    {{ trans('Odin::messages.res_model') }}
-                                                                                </button>
-                                                                            </form>
-                                                                        @endif
+                                                                        {{-- restore softDelete --}}
+                                                                        <form action="{{ route('odin.restore.soft', $rev->id) }}"
+                                                                            method="POST">
+                                                                            {{ method_field('PUT') }}
+                                                                            {{ csrf_field() }}
+                                                                            <button class="button is-success">
+                                                                                {{ trans('Odin::messages.res_model') }}
+                                                                            </button>
+                                                                        </form>
 
                                                                     @else
                                                                         @if ($rev->event !== 'restored')

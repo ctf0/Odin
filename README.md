@@ -23,10 +23,6 @@ Manage model revisions with ease.
 'providers' => [
     ctf0\Odin\OdinServiceProvider::class,
 ];
-
-'aliases' => [
-    'Odin' => \ctf0\Odin\Facade\Odin::class,
-];
 ```
 
 - publish the package assets with
@@ -37,7 +33,7 @@ Manage model revisions with ease.
     + package routes to `routes/web.php`
     + package assets compiling to `webpack.mix.js`
 
-- check http://www.laravel-auditing.com/docs/5.0/installation for configuration
+- check http://www.laravel-auditing.com/docs/6.0/installation for configuration
 
 - install dependencies
 
@@ -99,7 +95,7 @@ new Vue({
 ## Usage
 
 - add `Revisions` trait & `AuditableContract` contract to your model
-    + for `User model` plz check http://www.laravel-auditing.com/docs/5.0/general-configuration
+    + for `User model` plz check http://laravel-auditing.com/docs/6.0/audit-resolvers
 
 ```php
 
