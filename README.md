@@ -5,9 +5,10 @@
 
 Manage model revisions with ease.
 
-<p align="center">
-    <img src="https://user-images.githubusercontent.com/7388088/33775349-be6f1696-dc46-11e7-880f-693a47d86b52.jpg">
-</p>
+<details><summary>Preview</summary>
+
+![preview](https://user-images.githubusercontent.com/7388088/33775349-be6f1696-dc46-11e7-880f-693a47d86b52.jpg)
+</details>
 
 - package requires Laravel v5.4+
 
@@ -19,40 +20,40 @@ Manage model revisions with ease.
 
 - (Laravel < 5.5) add the service provider & facade
 
-```php
-'providers' => [
-    ctf0\Odin\OdinServiceProvider::class,
-];
-```
+    ```php
+    'providers' => [
+        ctf0\Odin\OdinServiceProvider::class,
+    ];
+    ```
 
-- publish the package assets with
+* publish the package assets with
 
-`php artisan vendor:publish --provider="ctf0\Odin\OdinServiceProvider"`
+    `php artisan vendor:publish --provider="ctf0\Odin\OdinServiceProvider"`
 
 - after installation, package will auto-add
     + package routes to `routes/web.php`
     + package assets compiling to `webpack.mix.js`
 
-- check http://www.laravel-auditing.com/docs/6.0/installation for configuration
+- check http://www.laravel-auditing.com/docs/7.0/general-configuration for configuration
 
 - install dependencies
 
-```bash
-yarn add vue vue-awesome vue-notif vue-multi-ref axios keycode
-# or
-npm install vue vue-awesome vue-notif vue-multi-ref axios keycode --save
-```
+    ```bash
+    yarn add vue vue-awesome@v2 vue-notif vue-multi-ref axios keycode
+    # or
+    npm install vue vue-awesome@v2 vue-notif vue-multi-ref axios keycode --save
+    ```
 
 - add this one liner to your main js file and run `npm run watch` to compile your `js/css` files.
     + if you are having issues [Check](https://ctf0.wordpress.com/2017/09/12/laravel-mix-es6/).
 
-```js
-require('../vendor/Odin/js/manager')
+    ```js
+    require('../vendor/Odin/js/manager')
 
-new Vue({
-    el: '#app'
-})
-```
+    new Vue({
+        el: '#app'
+    })
+    ```
 
 <br>
 
@@ -95,29 +96,29 @@ new Vue({
 ## Usage
 
 - add `Revisions` trait & `AuditableContract` contract to your model
-    + for `User model` plz check http://laravel-auditing.com/docs/6.0/audit-resolvers
+    + for `User model` check http://laravel-auditing.com/docs/6.1/audit-resolvers
 
-```php
+    ```php
 
-use ctf0\Odin\Traits\Revisions;
-use Illuminate\Database\Eloquent\Model;
-use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+    use ctf0\Odin\Traits\Revisions;
+    use Illuminate\Database\Eloquent\Model;
+    use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 
-class Post extends Model implements AuditableContract
-{
-    use Revisions;
+    class Post extends Model implements AuditableContract
+    {
+        use Revisions;
 
-    // ...
-}
-```
+        // ...
+    }
+    ```
 
 - inside the model view ex.`post edit view` add
 
-```blade
-@if (count($post->revisions))
-    @include('Odin::list', ['revisions' => $post->revisions])
-@endif
-```
+    ```blade
+    @if (count($post->revisions))
+        @include('Odin::list', ['revisions' => $post->revisions])
+    @endif
+    ```
 
 <br>
 

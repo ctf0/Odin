@@ -22,7 +22,7 @@
         "php" : "~7.0",
         "illuminate/support": "~5.4.0|~5.5.0|~5.6.0",
         "phpspec/php-diff": "^1.1",
-        "owen-it/laravel-auditing": "^6.0",
+        "owen-it/laravel-auditing": "^7.0",
         "ctf0/package-changelog": "^1.0"
     },
     "autoload": {
@@ -40,5 +40,11 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "post-package-install": [
+            "@php artisan vendor:publish --provider=\"ctf0\\Odin\\OdinServiceProvider\"",
+            "@php artisan auditing:install"
+        ]
     }
 }

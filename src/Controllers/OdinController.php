@@ -53,13 +53,10 @@ class OdinController extends Controller
             ]);
         }
 
-        if ($revision->event == 'created') {
-            // use new
-            $model = app($revision->auditable_type)->findOrFail($revision->auditable_id)->transitionTo($revision);
-        } else {
-            // use old
-            $model = app($revision->auditable_type)->findOrFail($revision->auditable_id)->transitionTo($revision, true);
-        }
+        $model = app($revision->auditable_type)->findOrFail($revision->auditable_id);
+        $revision->event == 'created'
+            ? $model->transitionTo($revision) // use new
+            : $model->transitionTo($revision, true); // use old
 
         $model->save()
             ? session()->flash('status', trans('Odin::messages.res_success'))
