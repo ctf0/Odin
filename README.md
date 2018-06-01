@@ -1,7 +1,6 @@
 # Odin
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin) [![Total Downloads](https://img.shields.io/packagist/dt/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin)
-[![Donate with Bitcoin](https://en.cryptobadges.io/badge/micro/16ri7Hh848bw7vxbEevKHFuHXLmsV8Vc9L)](https://en.cryptobadges.io/donate/16ri7Hh848bw7vxbEevKHFuHXLmsV8Vc9L)
+[![Latest Stable Version](https://img.shields.io/packagist/v/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin) [![Total Downloads](https://img.shields.io/packagist/dt/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin) [![Donate with Bitcoin](https://en.cryptobadges.io/badge/micro/16ri7Hh848bw7vxbEevKHFuHXLmsV8Vc9L)](https://en.cryptobadges.io/donate/16ri7Hh848bw7vxbEevKHFuHXLmsV8Vc9L)
 
 Manage model revisions with ease.
 
@@ -39,9 +38,9 @@ Manage model revisions with ease.
 - install dependencies
 
     ```bash
-    yarn add vue vue-awesome@v2 vue-notif vue-multi-ref axios keycode
+    yarn add vue vue-awesome@v2 vue-notif axios keycode
     # or
-    npm install vue vue-awesome@v2 vue-notif vue-multi-ref axios keycode --save
+    npm install vue vue-awesome@v2 vue-notif axios keycode --save
     ```
 
 - add this one liner to your main js file and run `npm run watch` to compile your `js/css` files.
@@ -95,8 +94,10 @@ Manage model revisions with ease.
 
 ## Usage
 
+- run `php artisan migrate`
+
 - add `Revisions` trait & `AuditableContract` contract to your model
-    + for `User model` check http://laravel-auditing.com/docs/6.1/audit-resolvers
+    + for `User model` [Check](http://laravel-auditing.com/docs/7.0/audit-resolvers)
 
     ```php
 

@@ -8,6 +8,11 @@ trait Revisions
 {
     use Auditable;
 
+    /**
+     * override default.
+     *
+     * @return [type] [description]
+     */
     public function getAuditExclude(): array
     {
         $main  = $this->auditExclude ?: [];
@@ -19,6 +24,6 @@ trait Revisions
     // Accessor for Revisions
     public function getRevisionsAttribute()
     {
-        return $this->audits->reverse();
+        return $this->audits->load('user')->reverse();
     }
 }

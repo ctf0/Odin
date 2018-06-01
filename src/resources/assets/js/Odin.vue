@@ -73,11 +73,9 @@ export default {
         toggleRev(id = null) {
             if (!id) {
                 this.selected = null
-                document.removeEventListener('keydown', this.navigation)
-                return EventHub.fire('odin-hide')
+                return document.removeEventListener('keydown', this.navigation)
             }
 
-            EventHub.fire('odin-show')
             this.updateRev(id)
             this.$nextTick(() => {
                 this.goTo(`${id}`)
@@ -97,7 +95,7 @@ export default {
             }).then(({data}) => {
                 if (data.success) {
                     this.showNotif(data.message)
-                    this.$refs[`rev-${id}`].map((e) => {
+                    Array.from(document.querySelectorAll(`[data-index="${id}"]`)).forEach((e) => {
                         e.remove()
                     })
                     arr.splice(index, 1)
@@ -143,6 +141,19 @@ export default {
                 type: s,
                 duration: duration
             })
+        }
+    },
+    watch: {
+        selected(val) {
+            const html = document.getElementsByTagName('html')[0]
+
+            if (val) {
+                html.classList.add('no-scroll')
+                return EventHub.fire('odin-show')
+            }
+
+            html.classList.remove('no-scroll')
+            EventHub.fire('odin-hide')
         }
     },
     render() {}

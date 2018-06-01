@@ -3,9 +3,6 @@ window.Vue = require('vue')
 window.EventHub = require('vuemit')
 window.keycode = require('keycode')
 
-// directive
-require('vue-multi-ref')
-
 // axios
 window.axios = require('axios')
 axios.defaults.headers.common = {

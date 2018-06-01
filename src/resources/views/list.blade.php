@@ -33,7 +33,7 @@
                         <tbody>
                             @foreach ($revisions as $rev)
                                 <tr class="revisions-link"
-                                    v-multi-ref="'rev-{{ $rev->id }}'"
+                                    data-index="{{ $rev->id }}"
                                     @click="toggleRev({{ $rev->id }})">
 
                                     {{-- user avatar --}}
@@ -76,7 +76,7 @@
                                 @endphp
 
                                 {{-- date --}}
-                                <li id="{{ $rev->id }}" class="timeline-header" v-multi-ref="'rev-{{ $rev->id }}'">
+                                <li id="{{ $rev->id }}" class="timeline-header" data-index="{{ $rev->id }}">
                                     <button class="tag is-rounded is-medium is-black revisions-link"
                                         @click.stop="updateRev({{ $rev->id }}), goTo('{{ $rev->id }}')">
                                         {{ $rev->created_at->diffForHumans() }}
@@ -84,7 +84,7 @@
                                 </li>
 
                                 {{-- data --}}
-                                <li class="timeline-item" v-multi-ref="'rev-{{ $rev->id }}'">
+                                <li class="timeline-item" data-index="{{ $rev->id }}">
                                     <div class="timeline-marker is-icon"
                                         :class="{'is-link' : selected == '{{ $rev->id }}'}">
                                         <template v-if="selected == '{{ $rev->id }}'">
@@ -104,7 +104,7 @@
                                             </p>
                                             {{-- event user --}}
                                             <p>
-                                                <small class="subtitle is-6">By</small>
+                                                <small class="subtitle is-6">{{ trans('Odin::messages.by') }} </small>
                                                 <span class="subtitle is-5">{{ $rev->user->name ?? '' }}</span>
                                             </p>
                                         </div>

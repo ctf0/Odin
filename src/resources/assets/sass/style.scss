@@ -4,7 +4,7 @@
 // overlay
 .shade {
     position: fixed;
-    z-index: 5;
+    z-index: 6;
     top: 0;
     right: 0;
     bottom: 0;
@@ -30,7 +30,7 @@
 // diff
 .compare-page {
     position: fixed;
-    z-index: 5;
+    z-index: 6;
     top: 0;
     right: 0;
     bottom: 0;
@@ -194,4 +194,8 @@
 
 .timeline .timeline-header {
     justify-content: start;
+}
+
+.no-scroll {
+    overflow: hidden;
 }
