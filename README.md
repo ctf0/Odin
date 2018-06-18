@@ -116,8 +116,8 @@ Manage model revisions with ease.
 - inside the model view ex.`post edit view` add
 
     ```blade
-    @if (count($post->revisions))
-        @include('Odin::list', ['revisions' => $post->revisions])
+    @if (count($post->$menu->revisionsWithRelation))
+        @include('Odin::list', ['revisions' => $post->$menu->revisionsWithRelation])
     @endif
     ```
 

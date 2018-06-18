@@ -8,7 +8,7 @@
     word-wrap: normal;
     text-align: center;
     display: flex;
-    justify-content: center;
+    justify-content: start;
 }
 
 .timeline .timeline-item {
@@ -101,6 +101,7 @@
     background: #dbdbdb;
     border: 0.1em solid #dbdbdb;
     border-radius: 100%;
+    color: white;
 }
 
 .timeline .timeline-item .timeline-marker.is-icon > i {

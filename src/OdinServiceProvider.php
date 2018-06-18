@@ -15,14 +15,14 @@ class OdinServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->file = app('files');
+        $this->file = $this->app['files'];
 
         $this->packagePublish();
         $this->auditEvent();
         $this->command();
 
         // append extra data
-        if (!app('cache')->store('file')->has('ct-odin')) {
+        if (!$this->app['cache']->store('file')->has('ct-odin')) {
             $this->autoReg();
         }
     }
@@ -34,6 +34,11 @@ class OdinServiceProvider extends ServiceProvider
      */
     protected function packagePublish()
     {
+        // migrations
+        $this->publishes([
+            __DIR__ . '/database' => database_path('migrations'),
+        ], 'migrations');
+
         // resources
         $this->publishes([
             __DIR__ . '/resources/assets' => resource_path('assets/vendor/Odin'),
@@ -106,7 +111,7 @@ class OdinServiceProvider extends ServiceProvider
         }
 
         // run check once
-        app('cache')->store('file')->rememberForever('ct-odin', function () {
+        $this->app['cache']->store('file')->rememberForever('ct-odin', function () {
             return 'added';
         });
     }

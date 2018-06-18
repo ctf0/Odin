@@ -78,7 +78,7 @@
                                 {{-- date --}}
                                 <li id="{{ $rev->id }}" class="timeline-header" data-index="{{ $rev->id }}">
                                     <button class="tag is-rounded is-medium is-black revisions-link"
-                                        @click.stop="updateRev({{ $rev->id }}), goTo('{{ $rev->id }}')">
+                                        @click.stop="goTo({{ $rev->id }})">
                                         {{ $rev->created_at->diffForHumans() }}
                                     </button>
                                 </li>
@@ -179,10 +179,8 @@
                                                                 {{-- remove revision --}}
                                                                 <div class="level-item">
                                                                     <form action="{{ route('odin.remove', $rev->id) }}"
-                                                                        method="POST"
                                                                         data-id="{{ $rev->id }}"
                                                                         @submit.prevent="removeRev($event)">
-                                                                        {{ method_field('DELETE') }}
                                                                         {{ csrf_field() }}
                                                                         <button class="button is-danger">
                                                                             {{ trans('Odin::messages.del') }}
@@ -197,11 +195,9 @@
                                                                 {{-- remove revision --}}
                                                                 <div class="level-item">
                                                                     <form action="{{ route('odin.remove', $rev->id) }}"
-                                                                        method="POST"
                                                                         data-id="{{ $rev->id }}"
                                                                         @submit.prevent="removeRev($event)">
                                                                         {{ csrf_field() }}
-                                                                        {{ method_field('DELETE') }}
                                                                         <button class="button is-danger">
                                                                             {{ trans('Odin::messages.del') }}
                                                                         </button>

@@ -1,0 +1,2 @@
+- add support for auditing relation events “attach, detach, sync”
+- fix inconsistent scroll by keyboard

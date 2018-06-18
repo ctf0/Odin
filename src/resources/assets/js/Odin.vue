@@ -1,4 +1,6 @@
 <script>
+import animateScrollTo from './animated-scroll-to'
+
 export default {
     name: 'odin',
     props: ['translations', 'revList'],
@@ -56,14 +58,19 @@ export default {
                         return
                     }
 
-                    this.updateRev(newId)
-                    this.goTo(`${newId}`)
+                    e.preventDefault()
+                    this.goTo(newId)
                 }
             }
         },
         goTo(id) {
-            let count = document.getElementById(id).offsetTop - this.$refs.container.scrollTop - 28
-            this.$refs.container.scrollBy({top: count, left: 0, behavior: 'smooth'})
+            this.updateRev(id)
+            animateScrollTo(document.getElementById(id), {
+                maxDuration: 1000,
+                offset: -28,
+                element: this.$refs.container,
+                useKeys: true
+            })
         },
 
         // rev
@@ -76,9 +83,8 @@ export default {
                 return document.removeEventListener('keydown', this.navigation)
             }
 
-            this.updateRev(id)
             this.$nextTick(() => {
-                this.goTo(`${id}`)
+                this.goTo(id)
                 document.addEventListener('keydown', this.navigation)
             })
         },
@@ -102,8 +108,7 @@ export default {
 
                     if (arr.length) {
                         let newIndex = arr[index] || arr[0]
-                        this.updateRev(newIndex)
-                        return this.goTo(`${newIndex}`)
+                        return this.goTo(newIndex)
                     }
 
                     this.toggleRev()
