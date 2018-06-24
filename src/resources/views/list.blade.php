@@ -18,8 +18,8 @@
     </div>
 
     {{-- Odin --}}
-    <odin inline-template
-        :translations="{{ json_encode(['ajax_fail' => trans('Odin::messages.ajax_fail')]) }}"
+    <odin inline-template v-cloak
+        :translations="{{ json_encode(['ajax_error' => trans('Odin::messages.ajax_error')]) }}"
         :rev-list="{{ json_encode($revisions->pluck('id')) }}">
 
         <div>
@@ -57,9 +57,7 @@
                     </table>
 
                     {{-- diff --}}
-                    <div class="compare-page odin-animated fadeInUp"
-                        v-show="selected"
-                        ref="container">
+                    <div class="compare-page odin-animated fadeInUp" v-show="selected">
 
                         {{-- close --}}
                         <div class="is-pulled-right">
@@ -67,7 +65,7 @@
                         </div>
 
                         {{-- content --}}
-                        <ul class="timeline">
+                        <ul id="scrollArea" class="timeline" ref="container">
                             @foreach ($revisions as $rev)
                                 @php
                                     $html = app('odin')->toHtml($rev);

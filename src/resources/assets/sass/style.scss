@@ -27,6 +27,12 @@
     }
 }
 
+#scrollArea {
+    display: block;
+    overflow: scroll;
+    height: 100%;
+}
+
 // diff
 .compare-page {
     position: fixed;

@@ -4,6 +4,8 @@
 
 Manage model revisions with ease.
 
+>If you are also looking to preview the form data before submitting it to the db, you may want to give [OverSeer](https://github.com/ctf0/OverSeer) a try.
+
 <details><summary>Preview</summary>
 
 ![preview](https://user-images.githubusercontent.com/7388088/33775349-be6f1696-dc46-11e7-880f-693a47d86b52.jpg)
@@ -116,8 +118,8 @@ Manage model revisions with ease.
 - inside the model view ex.`post edit view` add
 
     ```blade
-    @if (count($post->$menu->revisionsWithRelation))
-        @include('Odin::list', ['revisions' => $post->$menu->revisionsWithRelation])
+    @if (count($post->revisionsWithRelation))
+        @include('Odin::list', ['revisions' => $post->revisionsWithRelation])
     @endif
     ```
 

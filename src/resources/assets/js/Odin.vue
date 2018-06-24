@@ -65,6 +65,7 @@ export default {
         },
         goTo(id) {
             this.updateRev(id)
+
             animateScrollTo(document.getElementById(id), {
                 maxDuration: 1000,
                 offset: -28,
@@ -119,7 +120,7 @@ export default {
 
             }).catch((err) => {
                 console.error(err)
-                this.showNotif(this.trans('ajax_fail'), 'black')
+                this.showNotif(this.trans('ajax_error'), 'black')
             })
         },
         trans(key) {
