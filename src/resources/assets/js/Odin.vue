@@ -66,11 +66,13 @@ export default {
         goTo(id) {
             this.updateRev(id)
 
-            animateScrollTo(document.getElementById(id), {
-                maxDuration: 1000,
-                offset: -28,
-                element: this.$refs.container,
-                useKeys: true
+            this.$nextTick(() => {
+                animateScrollTo(document.getElementById(id), {
+                    maxDuration: 1000,
+                    offset: -28,
+                    element: this.$refs.container,
+                    useKeys: true
+                })
             })
         },
 

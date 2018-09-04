@@ -1,10 +1,10 @@
 # Odin
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin) [![Total Downloads](https://img.shields.io/packagist/dt/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin) [![Donate with Bitcoin](https://en.cryptobadges.io/badge/micro/16ri7Hh848bw7vxbEevKHFuHXLmsV8Vc9L)](https://en.cryptobadges.io/donate/16ri7Hh848bw7vxbEevKHFuHXLmsV8Vc9L)
+[![Latest Stable Version](https://img.shields.io/packagist/v/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin) [![Total Downloads](https://img.shields.io/packagist/dt/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin)
 
 Manage model revisions with ease.
 
->If you are also looking to preview the form data before submitting it to the db, you may want to give [OverSeer](https://github.com/ctf0/OverSeer) a try.
+> If you are also looking to preview the form data before submitting to the db, you may want to give [OverSeer](https://github.com/ctf0/OverSeer) a try.
 
 <details><summary>Preview</summary>
 
@@ -49,6 +49,10 @@ Manage model revisions with ease.
     + if you are having issues [Check](https://ctf0.wordpress.com/2017/09/12/laravel-mix-es6/).
 
     ```js
+    // app.js
+
+    window.Vue = require('vue')
+
     require('../vendor/Odin/js/manager')
 
     new Vue({
@@ -66,11 +70,12 @@ Manage model revisions with ease.
 - support soft deletes.
 - [revision preview](https://github.com/ctf0/Odin/wiki/Preview-Revision).
 - clear audits for permanently deleted models.
+
     ```bash
     php artisan odin:gc
     ```
 
-    which can be scheduled as well
+    + which can be scheduled as well
     ```php
     $schedule->command('odin:gc')->sundays();
     ```
@@ -99,7 +104,7 @@ Manage model revisions with ease.
 - run `php artisan migrate`
 
 - add `Revisions` trait & `AuditableContract` contract to your model
-    + for `User model` [Check](http://laravel-auditing.com/docs/7.0/audit-resolvers)
+    + for `User model` [Check](http://laravel-auditing.com/docs/master/audit-resolvers)
 
     ```php
 
@@ -111,7 +116,37 @@ Manage model revisions with ease.
     {
         use Revisions;
 
+        /**
+         * resolve model title/name for the revision relation
+         * this is needed so we can render
+         * the model relation attach/detach changes
+         */
+        public function getMiscTitleAttribute()
+        {
+            return $this->name;
+        }
+
         // ...
+    }
+    ```
+
+- you can disable creating **ghost** audits where both `old/new` values are empty by using
+    + remember that without the parent model audit log we cant show the relation changes
+
+    ```php
+    // app/Providers/EventServiceProvider
+
+    use OwenIt\Auditing\Models\Audit;
+
+    public function boot()
+    {
+        parent::boot();
+
+        Audit::creating(function (Audit $model) {
+            if (empty($model->old_values) && empty($model->new_values)) {
+                return false;
+            }
+        });
     }
     ```
 
@@ -125,10 +160,20 @@ Manage model revisions with ease.
 
 <br>
 
-## Notes For `data:uri`
+## Notes
 
-- if you use `data:uri` in your revisionable content, change [`audits_table`](https://github.com/owen-it/laravel-auditing/blob/958a6edd4cd4f9d61aa34f288f708644e150e866/database/migrations/audits.stub#L33-L34) columns type to either `mediumText` or `longText` before migrating to avoid future errors of long data.
+- model `user_id` & `id` are excluded from the audit log by default.
 
-- because `data:uri` is render blocking & isn't readable by humans, we truncate it to 75 char max **(the smallest stable data:uri is 78 char)**,
+- **data:uri**
+    - if you use `data:uri` in your revisionable content, change [`audits_table`](https://github.com/owen-it/laravel-auditing/blob/958a6edd4cd4f9d61aa34f288f708644e150e866/database/migrations/audits.stub#L33-L34) columns type to either `mediumText` or `longText` before migrating to avoid future errors of long data.
 
-    note that this ***ONLY*** effects the displaying of the revision diff, we never touch the data that gets saved to the db.
+    - because `data:uri` is a render blocking & isn't readable by humans, we truncate it to 75 char max **(the smallest stable data:uri is 78 char)**,<br>
+        note that this ***ONLY*** effects the displaying of the revision diff, we never touch the data that gets saved to the db.
+
+- **model-relation**
+    + atm the relation revision is limited, it means we can only show the `attach/detach` changes but we cant `undo/redo` any of them through the package it self.
+    + also if you use mass update like `Model::update()` make sure to call `$model->touch();` afterwards to make sure an audit is created ex.
+        ```php
+        $model = Model::update([...]);
+        $model->touch();
+        ```

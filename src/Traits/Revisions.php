@@ -12,44 +12,48 @@ trait Revisions
     public static function bootRevisions()
     {
         static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
-            return $model->savePivotAudit(
+            if ($pivotIds) {
+                return $model->savePivotAudit(
                     'Attached',
+                    $model->getKey(),
                     get_class($model->$relationName()->getRelated()),
-                    $pivotIds[0],
-                    $model->getKey()
+                    $pivotIds[0]
                 );
+            }
         });
 
         static::pivotDetached(function ($model, $relationName, $pivotIds) {
-            return $model->savePivotAudit(
+            if ($pivotIds) {
+                return $model->savePivotAudit(
                     'Detached',
+                    $model->getKey(),
                     get_class($model->$relationName()->getRelated()),
-                    $pivotIds[0],
-                    $model->getKey()
+                    $pivotIds[0]
                 );
+            }
         });
     }
 
-    private function savePivotAudit($eventName, $relationClass, $relationId, $modelId)
+    private function savePivotAudit($eventName, $id, $relation, $pivotId)
     {
         return app('db')->table('audits_pivot')->insert([
             'event'          => $eventName,
-            'auditable_id'   => $modelId,
+            'auditable_id'   => $id,
+            'relation_type'  => $relation,
+            'relation_id'    => $pivotId,
             'auditable_type' => $this->getMorphClass(),
-            'relation_type'  => $relationClass,
-            'relation_id'    => $relationId,
             'created_at'     => now(),
             'updated_at'     => now(),
         ]);
     }
 
-    private function getPivotAudits($type, $id)
+    private function getPivotAudits($type, $id, $date)
     {
         return app('db')->table('audits_pivot')
                         ->where('auditable_id', $id)
                         ->where('auditable_type', $type)
-                        ->get()
-                        ->reverse();
+                        ->where('updated_at', $date)
+                        ->get();
     }
 
     /**
@@ -65,16 +69,26 @@ trait Revisions
         return array_merge($main, $extra);
     }
 
-    // Accessor for Revisions
+    /**
+     * normal : $model->audits.
+     */
     public function getRevisionsAttribute()
     {
         return $this->audits->load('user')->reverse();
     }
 
+    /**
+     * with relation : $model->auditsWithRelation.
+     */
     public function getRevisionsWithRelationAttribute()
     {
         return $this->audits->load('user')->map(function ($item) {
-            $item['relations'] = $this->getPivotAudits($item->auditable_type, $item->auditable_id);
+            $item['odin_relations'] = $this->getPivotAudits($item->auditable_type, $item->auditable_id, $item->updated_at)
+                ->groupBy(['created_at', 'relation_id', 'relation_type'])
+                ->flatten(2)
+                ->reject(function ($item) {
+                    return $item->count() == 2;
+                })->flatten()->reverse();
 
             return $item;
         })->reverse();

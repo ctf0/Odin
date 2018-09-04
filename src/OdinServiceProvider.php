@@ -2,7 +2,6 @@
 
 namespace ctf0\Odin;
 
-use OwenIt\Auditing\Models\Audit;
 use Illuminate\Support\ServiceProvider;
 use ctf0\Odin\Commands\GarbageCollector;
 
@@ -18,13 +17,26 @@ class OdinServiceProvider extends ServiceProvider
         $this->file = $this->app['files'];
 
         $this->packagePublish();
-        $this->auditEvent();
+        $this->registerMacro();
         $this->command();
 
         // append extra data
         if (!$this->app['cache']->store('file')->has('ct-odin')) {
             $this->autoReg();
         }
+    }
+
+    protected function registerMacro()
+    {
+        $this->app['router']->macro('setGroupNamespace', function ($namesapce = null) {
+            $lastGroupStack = array_pop($this->groupStack);
+            if ($lastGroupStack !== null) {
+                array_set($lastGroupStack, 'namespace', $namesapce);
+                $this->groupStack[] = $lastGroupStack;
+            }
+
+            return $this;
+        });
     }
 
     /**
@@ -55,20 +67,6 @@ class OdinServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/resources/views' => resource_path('views/vendor/Odin'),
         ], 'views');
-    }
-
-    /**
-     * dont save audit when old & new are empty.
-     *
-     * @return [type] [description]
-     */
-    protected function auditEvent()
-    {
-        Audit::creating(function (Audit $model) {
-            if (empty($model->old_values) && empty($model->new_values)) {
-                return false;
-            }
-        });
     }
 
     /**
@@ -105,7 +103,7 @@ class OdinServiceProvider extends ServiceProvider
         $search   = 'Odin';
 
         if ($this->checkExist($mix_file, $search)) {
-            $data = "\n// Odin\nmix.sass('resources/assets/vendor/Odin/sass/style.scss', 'public/assets/vendor/Odin/style.css').version();";
+            $data = "\n// Odin\nmix.sass('resources/assets/vendor/Odin/sass/style.scss', 'public/assets/vendor/Odin/style.css')";
 
             $this->file->append($mix_file, $data);
         }

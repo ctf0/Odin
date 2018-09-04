@@ -31,7 +31,7 @@
                     {{-- list --}}
                     <table class="table is-hoverable is-narrow">
                         <tbody>
-                            @foreach ($revisions as $rev)
+                            @foreach($revisions as $rev)
                                 <tr class="revisions-link"
                                     data-index="{{ $rev->id }}"
                                     @click="toggleRev({{ $rev->id }})">
@@ -39,7 +39,7 @@
                                     {{-- user avatar --}}
                                     <td class="has-text-center">
                                         <figure class="image is-24x24">
-                                                <img src="{{ $rev->user->avatar ?? '' }}">
+                                            <img src="{{ $rev->user->avatar ?? '' }}">
                                         </figure>
                                     </td>
 
@@ -49,7 +49,7 @@
                                     {{-- date --}}
                                     <td>
                                         {{ $rev->created_at->diffForHumans() }}
-                                        <strong>"{{ $rev->created_at->format('F j, Y @ h:i A') }}"</strong>
+                                        <strong>"{{ $rev->created_at->format('F j, Y @ h:i:s A') }}"</strong>
                                     </td>
                                 </tr>
                             @endforeach
@@ -66,7 +66,7 @@
 
                         {{-- content --}}
                         <ul id="scrollArea" class="timeline" ref="container">
-                            @foreach ($revisions as $rev)
+                            @foreach($revisions as $rev)
                                 @php
                                     $html = app('odin')->toHtml($rev);
                                     $class = $rev->event == 'created' ? 'is-link is-outlined' : 'is-success';
@@ -94,44 +94,59 @@
                                         <div class="heading">
                                             {{-- event name --}}
                                             <p><span class="title">{{ $rev->event }}</span></p>
+
                                             {{-- event date --}}
                                             <p>
                                                 <span class="subtitle is-6">
-                                                    {{ $rev->created_at->format('F j, Y @ h:i A') }}
+                                                    {{ $rev->created_at->format('F j, Y @ h:i:s A') }}
                                                 </span>
                                             </p>
+
                                             {{-- event user --}}
                                             <p>
-                                                <small class="subtitle is-6">{{ trans('Odin::messages.by') }} </small>
+                                                <small class="subtitle is-6">{{ trans('Odin::messages.by') }}</small>
                                                 <span class="subtitle is-5">{{ $rev->user->name ?? '' }}</span>
                                             </p>
                                         </div>
 
                                         <div>
-                                            {{-- body --}}
                                             <section class="compare-page__body">
-                                                @if ($html)
+                                                {{-- body --}}
+                                                @if($html)
                                                     {!! $html !!}
-                                                @else
-                                                    <p class="title is-5 is-info is-marginless notification">
+                                                @endif
+
+                                                {{-- relations --}}
+                                                @if($rev->odin_relations->count())
+                                                    @foreach($rev->odin_relations as $item)
+                                                        <p class="title">{{ class_basename($item->relation_type) }}</p>
+                                                        <table class="table is-fullwidth Differences DifferencesSideBySide">
+                                                            <tbody class="ChangeReplace">
+                                                                <tr>
+                                                                    <td class="Left">{{ $item->event == 'Detached' ? app($item->relation_type)->find($item->relation_id)->misc_title : '' }}</td>
+                                                                    <td class="Right">{{ $item->event == 'Attached' ? app($item->relation_type)->find($item->relation_id)->misc_title : '' }}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    @endforeach
+                                                @endif
+
+                                                {{-- no changes --}}
+                                                @if(!$rev->odin_relations->count() && !$html)
+                                                    <p class="title is-5 is-info notification">
                                                         {{ trans('Odin::messages.no_diff') }}
                                                     </p>
                                                 @endif
                                             </section>
 
                                             {{-- ops --}}
-                                            @if (count($revisions) > 1)
+                                            @if(count($revisions) > 1)
                                                 <div class="compare-page__footer">
-
-                                                    @if ($rev->event == 'created')
-                                                        <p class="title is-6">{{ trans('Odin::messages.reset_data') }}</p>
-                                                    @endif
-
                                                     <div class="level">
-                                                        @if ($html)
+                                                        @if($html)
                                                             {{-- preview --}}
                                                             <div class="level-left">
-                                                                @if ($previewCheck)
+                                                                @if($previewCheck)
                                                                     <div class="level-item">
                                                                         <form action="{{ route('odin.preview', $rev->id) }}"
                                                                             method="POST"
@@ -148,7 +163,7 @@
 
                                                             <div class="level-right">
                                                                 <div class="level-item">
-                                                                    @if ($rev->event == 'deleted')
+                                                                    @if($rev->event == 'deleted')
                                                                         {{-- restore softDelete --}}
                                                                         <form action="{{ route('odin.restore.soft', $rev->id) }}"
                                                                             method="POST">
@@ -158,19 +173,15 @@
                                                                                 {{ trans('Odin::messages.res_model') }}
                                                                             </button>
                                                                         </form>
-
-                                                                    @else
-                                                                        @if ($rev->event !== 'restored')
-                                                                            {{-- restore normal --}}
-                                                                            <form action="{{ route('odin.restore', $rev->id) }}"
-                                                                                method="POST">
-                                                                                {{ csrf_field() }}
-                                                                                <button class="button {{ $class }}">
-                                                                                    {{ trans('Odin::messages.res') }}
-                                                                                </button>
-                                                                            </form>
-                                                                        @endif
-
+                                                                    @elseif($rev->event != 'restored')
+                                                                        {{-- restore normal --}}
+                                                                        <form action="{{ route('odin.restore', $rev->id) }}"
+                                                                            method="POST">
+                                                                            {{ csrf_field() }}
+                                                                            <button class="button {{ $class }}">
+                                                                                {{ trans('Odin::messages.res') }}
+                                                                            </button>
+                                                                        </form>
                                                                     @endif
                                                                 </div>
 
@@ -222,4 +233,4 @@
 </section>
 
 {{-- Footer --}}
-<script src="{{ asset('path/to/app.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>

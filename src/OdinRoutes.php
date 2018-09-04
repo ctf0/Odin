@@ -10,10 +10,12 @@ class OdinRoutes
             'prefix' => 'odin',
             'as'     => 'odin.',
         ], function () {
-            app('router')->post('revision/{id}/preview', '\ctf0\Odin\Controllers\OdinController@preview')->name('preview');
-            app('router')->post('restore/{id}', '\ctf0\Odin\Controllers\OdinController@restore')->name('restore');
-            app('router')->put('restore-soft/{id}', '\ctf0\Odin\Controllers\OdinController@restoreSoft')->name('restore.soft');
-            app('router')->delete('remove/{id}', '\ctf0\Odin\Controllers\OdinController@remove')->name('remove');
+            app('router')->setGroupNamespace('\ctf0\Odin\Controllers');
+
+            app('router')->post('revision/{id}/preview', 'OdinController@preview')->name('preview');
+            app('router')->post('restore/{id}', 'OdinController@restore')->name('restore');
+            app('router')->put('restore-soft/{id}', 'OdinController@restoreSoft')->name('restore.soft');
+            app('router')->delete('remove/{id}', 'OdinController@remove')->name('remove');
         });
     }
 }

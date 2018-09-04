@@ -36,8 +36,8 @@ class Odin
                 $data = array_reverse($data);
             }
 
-            $old  = '';
-            $new  = '';
+            $old = '';
+            $new = '';
 
             if (array_key_exists('new', $data)) {
                 $new = $data['new'];
@@ -103,8 +103,8 @@ class Odin
 
                 // render
                 foreach ($output as $e => $v) {
-                    $old     = isset($v[0]) ? $v[0] : '';
-                    $new     = isset($v[1]) ? $v[1] : '';
+                    $old = isset($v[0]) ? $v[0] : '';
+                    $new = isset($v[1]) ? $v[1] : '';
 
                     if ($res = $this->renderDiff($old, $new)) {
                         if (!in_array($col, $exist)) {
