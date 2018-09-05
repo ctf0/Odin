@@ -17,7 +17,8 @@ trait Revisions
                     'Attached',
                     $model->getKey(),
                     get_class($model->$relationName()->getRelated()),
-                    $pivotIds[0]
+                    $pivotIds[0],
+                    $model->updated_at
                 );
             }
         });
@@ -28,22 +29,22 @@ trait Revisions
                     'Detached',
                     $model->getKey(),
                     get_class($model->$relationName()->getRelated()),
-                    $pivotIds[0]
+                    $pivotIds[0],
+                    $model->updated_at
                 );
             }
         });
     }
 
-    private function savePivotAudit($eventName, $id, $relation, $pivotId)
+    private function savePivotAudit($eventName, $id, $relation, $pivotId, $date)
     {
         return app('db')->table('audits_pivot')->insert([
-            'event'          => $eventName,
-            'auditable_id'   => $id,
-            'relation_type'  => $relation,
-            'relation_id'    => $pivotId,
-            'auditable_type' => $this->getMorphClass(),
-            'created_at'     => now(),
-            'updated_at'     => now(),
+            'event'            => $eventName,
+            'auditable_id'     => $id,
+            'relation_type'    => $relation,
+            'relation_id'      => $pivotId,
+            'auditable_type'   => $this->getMorphClass(),
+            'parent_updated_at'=> $date,
         ]);
     }
 
@@ -52,7 +53,7 @@ trait Revisions
         return app('db')->table('audits_pivot')
                         ->where('auditable_id', $id)
                         ->where('auditable_type', $type)
-                        ->where('updated_at', $date)
+                        ->where('parent_updated_at', $date)
                         ->get();
     }
 
@@ -83,12 +84,13 @@ trait Revisions
     public function getRevisionsWithRelationAttribute()
     {
         return $this->audits->load('user')->map(function ($item) {
-            $item['odin_relations'] = $this->getPivotAudits($item->auditable_type, $item->auditable_id, $item->updated_at)
-                ->groupBy(['created_at', 'relation_id', 'relation_type'])
+            $item['odin_relations'] = $this
+                ->getPivotAudits($item->auditable_type, $item->auditable_id, $item->updated_at)
+                ->groupBy(['parent_updated_at', 'relation_id', 'relation_type'])
                 ->flatten(2)
                 ->reject(function ($item) {
                     return $item->count() == 2;
-                })->flatten()->reverse();
+                })->flatten()->reverse()->groupBy(['relation_type']);
 
             return $item;
         })->reverse();

@@ -1,0 +1,3 @@
+- fix the check between the pivot record and the parent because of incorrect dates “note that the audits_pivot_table has been updated along with the revision relation aggregator”
+
+- combine the relation changes under the same model name instead of rendering them individually

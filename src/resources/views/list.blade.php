@@ -118,14 +118,16 @@
 
                                                 {{-- relations --}}
                                                 @if($rev->odin_relations->count())
-                                                    @foreach($rev->odin_relations as $item)
-                                                        <p class="title">{{ class_basename($item->relation_type) }}</p>
+                                                    @foreach($rev->odin_relations as $key => $val)
+                                                        <p class="title">{{ class_basename($key) }}</p>
                                                         <table class="table is-fullwidth Differences DifferencesSideBySide">
                                                             <tbody class="ChangeReplace">
-                                                                <tr>
-                                                                    <td class="Left">{{ $item->event == 'Detached' ? app($item->relation_type)->find($item->relation_id)->misc_title : '' }}</td>
-                                                                    <td class="Right">{{ $item->event == 'Attached' ? app($item->relation_type)->find($item->relation_id)->misc_title : '' }}</td>
-                                                                </tr>
+                                                                @foreach($val as $item)
+                                                                    <tr>
+                                                                        <td class="Left">{{ $item->event == 'Detached' ? app($key)->find($item->relation_id)->misc_title : '' }}</td>
+                                                                        <td class="Right">{{ $item->event == 'Attached' ? app($key)->find($item->relation_id)->misc_title : '' }}</td>
+                                                                    </tr>
+                                                                @endforeach
                                                             </tbody>
                                                         </table>
                                                     @endforeach

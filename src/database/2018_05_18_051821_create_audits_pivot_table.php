@@ -16,7 +16,7 @@ class CreateAuditsPivotTable extends Migration
             $table->string('event');
             $table->morphs('auditable');
             $table->morphs('relation');
-            $table->timestamps();
+            $table->timestamp('parent_updated_at');
         });
     }
 
