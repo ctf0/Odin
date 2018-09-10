@@ -153,7 +153,7 @@ export default {
     },
     watch: {
         selected(val) {
-            const html = document.getElementsByTagName('html')[0]
+            const html = document.documentElement
 
             if (val) {
                 html.classList.add('no-scroll')
