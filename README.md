@@ -66,7 +66,6 @@ Manage model revisions with ease.
 
 - support single & nested values.
 - delete & restore revisions.
-- don't save the audit record if the model `old_value & new_value` are empty.
 - support soft deletes.
 - [revision preview](https://github.com/ctf0/Odin/wiki/Preview-Revision).
 - clear audits for permanently deleted models.
@@ -76,9 +75,9 @@ Manage model revisions with ease.
     ```
 
     + which can be scheduled as well
-    ```php
-    $schedule->command('odin:gc')->sundays();
-    ```
+      ```php
+      $schedule->command('odin:gc')->sundays();
+      ```
 
 - shortcuts
 
