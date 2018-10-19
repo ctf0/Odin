@@ -1,15 +1,15 @@
-# Odin
-
-[![Latest Stable Version](https://img.shields.io/packagist/v/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin) [![Total Downloads](https://img.shields.io/packagist/dt/ctf0/odin.svg)](https://packagist.org/packages/ctf0/odin)
+<h1 align="center">
+    Odin
+    <br>
+    <a href="https://packagist.org/packages/ctf0/odin"><img src="https://img.shields.io/packagist/v/ctf0/odin.svg" alt="Latest Stable Version" /></a> <a href="https://packagist.org/packages/ctf0/odin"><img src="https://img.shields.io/packagist/dt/ctf0/odin.svg" alt="Total Downloads" /></a>
+</h1>
 
 Manage model revisions with ease.
-
 > If you are also looking to preview the form data before submitting to the db, you may want to give [OverSeer](https://github.com/ctf0/OverSeer) a try.
 
-<details><summary>Preview</summary>
-
-![preview](https://user-images.githubusercontent.com/7388088/33775349-be6f1696-dc46-11e7-880f-693a47d86b52.jpg)
-</details>
+<p align="center">
+    <a href="https://user-images.githubusercontent.com/7388088/33775349-be6f1696-dc46-11e7-880f-693a47d86b52.jpg"><img src="https://user-images.githubusercontent.com/7388088/33775349-be6f1696-dc46-11e7-880f-693a47d86b52.jpg"></a>
+</p>
 
 - package requires Laravel v5.4+
 
