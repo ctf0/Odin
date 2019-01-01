@@ -166,7 +166,7 @@ Manage model revisions with ease.
 - **data:uri**
     - if you use `data:uri` in your revisionable content, change [`audits_table`](https://github.com/owen-it/laravel-auditing/blob/958a6edd4cd4f9d61aa34f288f708644e150e866/database/migrations/audits.stub#L33-L34) columns type to either `mediumText` or `longText` before migrating to avoid future errors of long data.
 
-    - because `data:uri` is a render blocking & isn't readable by humans, we truncate it to 75 char max **(the smallest stable data:uri is 78 char)**,<br>
+    - because `data:uri` is a render blocking & isn't readable by humans, we truncate it to 75 char max<br>
         note that this ***ONLY*** effects the displaying of the revision diff, we never touch the data that gets saved to the db.
 
 - **model-relation**
