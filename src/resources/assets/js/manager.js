@@ -15,11 +15,11 @@ axios.interceptors.response.use(
 
 // vue-awesome
 import 'vue-awesome/icons/flag'
-Vue.component('icon', require('vue-awesome/components/Icon'))
+Vue.component('icon', require('vue-awesome/components/Icon').default)
 
 /*                Components                */
-Vue.component('Odin', require('./Odin.vue'))
-Vue.component('MyNotification', require('vue-notif'))
+Vue.component('Odin', require('./Odin.vue').default)
+Vue.component('MyNotification', require('vue-notif').default)
 
 /*                Events                */
 EventHub.listen('odin-show', () => {})
