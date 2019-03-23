@@ -24,7 +24,7 @@
         "phpspec/php-diff": "^1.1",
         "owen-it/laravel-auditing": "*",
         "fico7489/laravel-pivot": "*",
-        "ctf0/package-changelog": "^1.0"
+        "ctf0/package-changelog": "*"
     },
     "autoload": {
         "psr-4": {
