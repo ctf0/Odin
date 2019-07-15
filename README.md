@@ -35,7 +35,7 @@ Manage model revisions with ease.
     + package routes to `routes/web.php`
     + package assets compiling to `webpack.mix.js`
 
-- check http://www.laravel-auditing.com/docs/7.0/general-configuration for configuration
+- check [laravel-auditing docs](http://www.laravel-auditing.com/docs/master/general-configuration) for configuration
 
 - install dependencies
 
