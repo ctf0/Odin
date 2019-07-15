@@ -41,9 +41,9 @@ trait Revisions
         return app('db')->table('audits_pivot')->insert([
             'event'            => $eventName,
             'auditable_id'     => $id,
-            'relation_type'    => $relation,
-            'relation_id'      => $pivotId,
             'auditable_type'   => $this->getMorphClass(),
+            'relation_id'      => $pivotId,
+            'relation_type'    => $relation,
             'parent_updated_at'=> $date,
         ]);
     }
