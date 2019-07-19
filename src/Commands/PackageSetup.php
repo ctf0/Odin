@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 
 class PackageSetup extends Command
 {
+    protected $file;
     protected $signature   = 'odin:setup';
     protected $description = 'setup package routes & assets compiling';
 
@@ -14,6 +15,8 @@ class PackageSetup extends Command
      */
     public function __construct()
     {
+        $this->file = $this->app['files'];
+
         parent::__construct();
     }
 
@@ -57,8 +60,6 @@ class PackageSetup extends Command
      */
     protected function checkExist($file, $search)
     {
-        $file = $this->app['files'];
-
-        return $file->exists($file) && !str_contains($file->get($file), $search);
+        return $this->file->exists($file) && !str_contains($this->file->get($file), $search);
     }
 }
