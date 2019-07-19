@@ -2,6 +2,7 @@
 
 namespace ctf0\Odin;
 
+use ctf0\Odin\Commands\PackageSetup;
 use Illuminate\Support\ServiceProvider;
 use ctf0\Odin\Commands\GarbageCollector;
 
@@ -62,7 +63,7 @@ class OdinServiceProvider extends ServiceProvider
     }
 
     /**
-     * clear audits table of permanently deleted auditable models.
+     * package commands.
      *
      * @return [type] [description]
      */
