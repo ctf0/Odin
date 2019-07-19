@@ -31,7 +31,7 @@ Manage model revisions with ease.
 
     `php artisan vendor:publish --provider="ctf0\Odin\OdinServiceProvider"`
 
-- after installation, package will auto-add
+- after installation, run `php artisan odin:setup` to add
     + package routes to `routes/web.php`
     + package assets compiling to `webpack.mix.js`
 
