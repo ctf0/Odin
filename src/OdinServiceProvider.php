@@ -2,6 +2,7 @@
 
 namespace ctf0\Odin;
 
+use Illuminate\Support\Arr;
 use ctf0\Odin\Commands\PackageSetup;
 use Illuminate\Support\ServiceProvider;
 use ctf0\Odin\Commands\GarbageCollector;
@@ -24,7 +25,7 @@ class OdinServiceProvider extends ServiceProvider
             $lastGroupStack = array_pop($this->groupStack);
 
             if ($lastGroupStack !== null) {
-                array_set($lastGroupStack, 'namespace', $namesapce);
+                Arr::set($lastGroupStack, 'namespace', $namesapce);
                 $this->groupStack[] = $lastGroupStack;
             }
 
