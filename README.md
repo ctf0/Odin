@@ -41,8 +41,6 @@ Manage model revisions with ease.
 
     ```bash
     yarn add vue vue-awesome@v2 vue-notif axios keycode
-    # or
-    npm install vue vue-awesome@v2 vue-notif axios keycode --save
     ```
 
 - add this one liner to your main js file and run `npm run watch` to compile your `js/css` files.
