@@ -19,7 +19,6 @@
         }
     ],
     "require": {
-        "php": "~7.0",
         "illuminate/support": ">=5.4 <9.0",
         "phpspec/php-diff": "^1.1",
         "owen-it/laravel-auditing": "*",
