@@ -86,8 +86,5 @@ class OdinServiceProvider extends ServiceProvider
         $this->app->singleton('odin', function () {
             return new Odin();
         });
-
-        $this->app->register(\ctf0\PackageChangeLog\PackageChangeLogServiceProvider::class);
-        $this->app->register(\OwenIt\Auditing\AuditingServiceProvider::class);
     }
 }
