@@ -46,5 +46,11 @@
             "@php artisan vendor:publish --provider=\"ctf0\\Odin\\OdinServiceProvider\"",
             "@php artisan auditing:install"
         ]
-    }
+    },
+    "funding": [
+        {
+            "type": "patreon",
+            "url": "https://www.patreon.com/ctf0"
+        }
+    ]
 }
